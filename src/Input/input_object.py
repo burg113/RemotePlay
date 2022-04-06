@@ -8,6 +8,8 @@ class InputObject:
     scalar_inputs = {}
     scalar_inputs_delta = {}
 
+    def has_deltas(self):
+        return len(self.key_inputs_delta)>0 or len(self.scalar_inputs_delta)>0
 
     def __init__(self, serialized=None):
         self.key_inputs = {}

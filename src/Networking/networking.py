@@ -6,49 +6,49 @@ from multiprocessing import Process
 class Server:
     sock = None
     callback = None
+    connections = []
 
-    def default_callback(self, uuid, conn, data):
+    def default_callback(uuid, data, send_back):
         print("received:-", data, "-", "from", uuid, "no callback function configured")
-        pass
 
-    def on_new_client(self, conn, addr, uuid):
-        print(f"Connected by {addr}", uuid)
-        while True:
-            data = conn.recv(1024)
-            self.callback(uuid, conn, data)
+    def __init__(self, port, callback=default_callback, chunksize=1024, host_ip="127.0.0.1"):
+        self.callback = callback
+        self.host(host_ip, port, chunksize)
 
-    def __init__(self, host, port):
-        self.callback = self.default_callback
-        sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    def host(self, host_ip, port, chunksize=1024):
+        self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
-        sock.bind((host, port))
-        sock.listen()
+        self.sock.bind((host_ip, port))
+        self.sock.listen()
 
         while True:
-            print(0)
-            conn, addr = sock.accept()
-            print(1)
-            p = Process(target=self.on_new_client, args=(conn, addr, unique_id.uuid4()))
-            print(2)
+            conn, addr = self.sock.accept()
+            p = Process(target=self.on_new_client, args=(conn, addr, unique_id.uuid4(), chunksize))
+            self.connections.append([p, conn, addr])
             p.start()
-            print(3)
 
+    def on_new_client(self, conn, addr, uuid, chunksize):
+        print(f"Connected: {addr}", uuid)
+        while True:
+            try:
+                data = conn.recv(chunksize)
+                self.callback(uuid, data, conn.sendall)
+            except ConnectionResetError:
+                break
+        print(f"Disconnected: {addr}", uuid)
 
-"""        with conn:
-            print(f"Connected by {addr}")
-            while True:
-                data = conn.recv(1024)
-                if not data:
-                    break
-                conn.sendall(data)
-"""
+    def broadcast(self, msg):
+        for connection in self.connections:
+            process, conn, addr = connection
+            if process.is_alive():
+                conn.sendall(msg)
 
 
 class Client:
     callback = None
     sock = None
 
-    def default_callback(data):
+    def default_callback(data, send_back):
         print("received:-", data, "- no callback function configured")
         pass
 
@@ -57,11 +57,14 @@ class Client:
         self.connect(host, port)
 
     def connect(self, host, port):
-        sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        sock.connect((host, port))
+        self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        self.sock.connect((host, port))
         print("connected")
-        sock.sendall(b"Hello, world")
+        self.sock.sendall(b"Hello, world")
 
         while True:
-            data = sock.recv(1024)
-            self.callback(data)
+            data = self.sock.recv(1024)
+            self.callback(data, self.sock.sendall)
+
+    def send(self, data):
+        self.sock.sendall(data)

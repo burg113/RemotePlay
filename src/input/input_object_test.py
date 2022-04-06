@@ -13,10 +13,12 @@ if __name__ == "__main__":
     print(i2.key_inputs)
 
     delta = input_object.InputObject()
-    print("--",delta.key_inputs)
     delta.input("key_C", 1)
     delta.input("key_A", 0)
-    print(delta.key_inputs)
+    i2.deserialize_delta(delta.serialize_delta())
+    print(i2.key_inputs)
 
-    i2.deserialize_delta(delta.serialize())
+    delta.input("key_C", 0)
+    delta.input("key_A", 1)
+    i2.deserialize_delta(delta.serialize_delta())
     print(i2.key_inputs)

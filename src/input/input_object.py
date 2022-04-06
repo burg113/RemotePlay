@@ -2,6 +2,12 @@ import pickle
 
 
 class InputObject:
+    key_inputs = {}
+    key_inputs_delta = {}
+
+    scalar_inputs = {}
+    scalar_inputs_delta = {}
+
 
     def __init__(self, serialized=None):
         self.key_inputs = {}
@@ -11,6 +17,12 @@ class InputObject:
 
     def serialize(self):
         return pickle.dumps((self.key_inputs, self.scalar_inputs))
+
+    def serialize_delta(self):
+        serialized = pickle.dumps((self.key_inputs_delta, self.scalar_inputs_delta))
+        self.key_inputs_delta = {}
+        self.scalar_inputs_delta = {}
+        return serialized
 
     def deserialize(self, data):
         self.key_inputs, self.scalar_inputs = pickle.loads(data)
@@ -26,5 +38,7 @@ class InputObject:
     def input(self, key, value, is_scalar=False):
         if is_scalar:
             self.scalar_inputs[key] = value
+            self.scalar_inputs_delta[key] = value
         else:
             self.key_inputs[key] = value
+            self.key_inputs_delta[key] = value

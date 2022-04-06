@@ -2,9 +2,6 @@ import socket
 import uuid as unique_id
 from multiprocessing import Process
 
-from matplotlib.axes._base import _process_plot_var_args
-
-
 class Server:
     sock = None
     callback = None

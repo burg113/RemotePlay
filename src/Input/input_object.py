@@ -39,8 +39,10 @@ class InputObject:
 
     def input(self, key, value, is_scalar=False):
         if is_scalar:
-            self.scalar_inputs[key] = value
-            self.scalar_inputs_delta[key] = value
+            if not (self.scalar_inputs.__contains__(key) and self.scalar_inputs[key] == value):
+                self.scalar_inputs[key] = value
+                self.scalar_inputs_delta[key] = value
         else:
-            self.key_inputs[key] = value
-            self.key_inputs_delta[key] = value
+            if not (self.key_inputs.__contains__(key) and self.key_inputs[key] == value):
+                self.key_inputs[key] = value
+                self.key_inputs_delta[key] = value

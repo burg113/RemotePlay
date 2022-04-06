@@ -2,6 +2,8 @@ import socket
 import uuid as unique_id
 from multiprocessing import Process
 
+from matplotlib.axes._base import _process_plot_var_args
+
 
 class Server:
     sock = None
@@ -47,6 +49,7 @@ class Server:
 class Client:
     callback = None
     sock = None
+    process = None
 
     def default_callback(data, send_back):
         print("received:-", data, "- no callback function configured")
@@ -56,15 +59,18 @@ class Client:
         self.callback = callback
         self.connect(host, port)
 
+    def listen(self, sock, callback):
+        while True:
+            data = sock.recv(1024)
+            callback(data, sock.sendall)
+
     def connect(self, host, port):
         self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.sock.connect((host, port))
         print("connected")
-        self.sock.sendall(b"Hello, world")
 
-        while True:
-            data = self.sock.recv(1024)
-            self.callback(data, self.sock.sendall)
+        self.process = Process(target=self.listen, args=(self.sock, self.callback))
+        self.process.start()
 
     def send(self, data):
         self.sock.sendall(data)

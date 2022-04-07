@@ -32,7 +32,7 @@ def press_keys(data):
     global last_sync
     global key_input
     key_input.deserialize_delta(data)
-    time.sleep(2)
+
     delta = input_object.InputObject()
     delta.deserialize_delta(data)
     print(delta.key_inputs)

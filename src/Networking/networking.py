@@ -44,14 +44,18 @@ def send(conn, msg, control_bytes=CONTROL_BYTE_LENGTH):
 
 
 def listen(self, conn, context):
-    self.buffer += conn.recv(self.CHUNK_SIZE)
 
     while True:
         try:
+            self.buffer += conn.recv(self.CHUNK_SIZE)
             while len(self.buffer) >= CONTROL_BYTE_LENGTH:
                 total_length = int_from_bytes(self.buffer[:self.CONTROL_BYTE_LENGTH]) + self.CONTROL_BYTE_LENGTH
                 if len(self.buffer) >= total_length:
+                    print("buffer: \t",self.buffer)
                     data = self.buffer[self.CONTROL_BYTE_LENGTH:total_length]
+                    print("buffer: ",self.buffer[:self.CONTROL_BYTE_LENGTH],data,)
+                    self.buffer = self.buffer[total_length:]
+                    print("cleared: \t",self.buffer)
                     self.callback(data, self.callback, context)
                 else:
                     break
@@ -88,7 +92,7 @@ class Server:
 
         while True:
             conn, addr = self.sock.accept()
-            p = Process(target=self.on_new_client, args=(conn, addr, unique_id.uuid4(), chunksize))
+            p = Process(target=self.on_new_client, args=(conn, addr, unique_id.uuid4()))
             self.connections.append([p, conn, addr])
             p.start()
 

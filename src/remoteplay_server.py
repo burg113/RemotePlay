@@ -1,14 +1,13 @@
 """
-
-    keys being stuch when sending deltas
-
-
-    key being held in all games
-
-    key delay
-
-    not getting proper inputs in game
-    but minecraft chat working
+    todo:
+        test multiple input computers
+        change output library to -Auto Hot Key-
+        support mouse
+        support controller
+        make program customisable though jsons
+        make prints toggleable
+        add different modes for handling multiple inputs
+        block keys for users
 
 """
 
@@ -36,24 +35,23 @@ def press_keys(data):
     delta = input_object.InputObject()
     delta.deserialize_delta(data)
     print(delta.key_inputs)
-    print(data)
     key_presser.press(delta)
 
-    #    key_input.deserialize(data)
-    #    key_presser.press(key_input)
 
-    if time.time() - last_sync > SYNCDURATION:
+""" if time.time() - last_sync > SYNCDURATION:
         # key_presser.press(key_input)
         last_sync = time.time()
-        print(3 * "-------------------------------------------------------\n")
+        print("-------------------------------------------------------\n")
         print(key_input.key_inputs)
-        print(3 * "-------------------------------------------------------\n")
+        print("-------------------------------------------------------\n")
+"""
 
 
 def received(data, respond, uuid):
-    # print("received:-", data, "-", "from", uuid)
+    print("received:-", data, "-", "from", uuid)
     press_keys(data)
 
 
 if __name__ == "__main__":
-    networking.Server(PORT, received, host_ip="0.0.0.0")
+    global server
+    server = networking.Server(PORT, received, host_ip="0.0.0.0")

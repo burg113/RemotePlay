@@ -1,6 +1,3 @@
-#todo:
-#   fix imports
-
 from Input import input_object
 from pynput import keyboard
 
@@ -35,4 +32,5 @@ def run():
 if __name__ == "__main__":
     run()
 
-    while True: pass
+    while True:
+        pass

@@ -10,7 +10,7 @@ HOST = "80.137.68.34"
 PORT = 5000
 
 last_sync = time.time()
-SYNCS_PER_SECOND = 1
+# SYNCS_PER_SECOND = 1
 
 
 def received(data, respond, ip):

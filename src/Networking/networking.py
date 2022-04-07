@@ -43,22 +43,22 @@ def send(conn, msg, control_bytes=CONTROL_BYTE_LENGTH):
     conn.sendall(header + msg)
 
 
-def listen(self, conn, context):
-
+def listen(self, conn, context, respond):
+    buffer = b""
     while True:
         try:
-            self.buffer += conn.recv(self.CHUNK_SIZE)
-            while len(self.buffer) >= CONTROL_BYTE_LENGTH:
-                total_length = int_from_bytes(self.buffer[:self.CONTROL_BYTE_LENGTH]) + self.CONTROL_BYTE_LENGTH
-                if len(self.buffer) >= total_length:
-                    print("buffer: \t",self.buffer)
-                    data = self.buffer[self.CONTROL_BYTE_LENGTH:total_length]
-                    print("buffer: ",self.buffer[:self.CONTROL_BYTE_LENGTH],data,)
-                    self.buffer = self.buffer[total_length:]
-                    print("cleared: \t",self.buffer)
-                    self.callback(data, self.callback, context)
-                else:
-                    break
+            try:
+                buffer += conn.recv(self.CHUNK_SIZE)
+                while len(buffer) >= CONTROL_BYTE_LENGTH:
+                    total_length = int_from_bytes(buffer[:self.CONTROL_BYTE_LENGTH]) + self.CONTROL_BYTE_LENGTH
+                    if len(buffer) >= total_length:
+                        data = buffer[self.CONTROL_BYTE_LENGTH:total_length]
+                        buffer = buffer[total_length:]
+                        self.callback(data, respond, context)
+                    else:
+                        break
+            except TypeError as e:
+                print(e)
         except ConnectionResetError:
             break
 
@@ -74,7 +74,6 @@ class Server:
         self.CONTROL_BYTE_LENGTH = math.ceil(math.log(length + math.ceil(math.log(length, 128)), 128))
 
     def __init__(self, port, callback=default_callback, chunksize=SOCKET_CHUNK_SIZE, host_ip="0.0.0.0"):
-        self.buffer = b""
         self.callback = callback
         self.CONTROL_BYTE_LENGTH = CONTROL_BYTE_LENGTH
         self.CHUNK_SIZE = SOCKET_CHUNK_SIZE
@@ -92,9 +91,11 @@ class Server:
 
         while True:
             conn, addr = self.sock.accept()
-            p = Process(target=self.on_new_client, args=(conn, addr, unique_id.uuid4()))
-            self.connections.append([p, conn, addr])
+            this_id = unique_id.uuid4()
+            p = Process(target=self.on_new_client, args=(conn, addr, this_id))
+            self.connections.append((conn, addr, this_id))
             p.start()
+            self.broadcast(b"someone joined!")
 
     class Connection:
         conn = None
@@ -105,25 +106,35 @@ class Server:
         def send(self, msg):
             send(self.conn, msg)
 
-    def on_new_client(self, conn, addr, uuid):
-        print(f"Connected: {addr}", uuid)
+    def on_new_client(self, conn, addr, id):
+        print(f"Connected: {addr}", id)
+        connection = self.Connection(conn)
+        listen(self, conn, id, connection.send)
 
-        listen(self, conn, uuid)
+        for c in range(len(self.connections)):
+            connection = self.connections[c]
+            _, _, some_id = connection
+            if some_id is id:
+                self.connections.remove(connection)
 
-        print(f"Disconnected: {addr}", uuid)
+        print(f"Disconnected: {addr}", id)
 
     def broadcast(self, msg):
         for connection in self.connections:
-            process, conn, addr = connection
-            if process.is_alive():
-                conn.sendall(msg)
+            conn, addr, uuid = connection
+            # todo: asdasd
+            print("hi")
+            try:
+                send(conn, b"soemone joined")
+            except ConnectionResetError:
+
+                pass
 
 
 class Client:
     # callback, sock, process, buffer, CONTROL_BYTE_LENGTH
 
     def __init__(self, host, port, callback=default_callback, chunksize=SOCKET_CHUNK_SIZE):
-        self.buffer = b""
         self.callback = callback
         self.CONTROL_BYTE_LENGTH = CONTROL_BYTE_LENGTH
         self.CHUNK_SIZE = SOCKET_CHUNK_SIZE
@@ -137,7 +148,7 @@ class Client:
     def on_connection(self, sock):
         print("Connected")
 
-        listen(self, sock, self.host_ip)
+        listen(self, sock, self.host_ip, send)
 
         print(f"Disconnected")
 

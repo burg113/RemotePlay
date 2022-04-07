@@ -33,15 +33,16 @@ SYNCDURATION=1
 def press_keys(data):
     global last_sync
     global key_input
-    """key_input.deserialize_delta(data)
+
+    key_input.deserialize_delta(data)
 
     delta = input_object.InputObject()
     delta.deserialize_delta(data)
     print(delta.key_inputs)
-    key_presser.press(delta)"""
+    key_presser.press(delta)
 
-    key_input.deserialize(data)
-    key_presser.press(key_input)
+#    key_input.deserialize(data)
+#    key_presser.press(key_input)
 
     if time.time() - last_sync > SYNCDURATION:
         #key_presser.press(key_input)

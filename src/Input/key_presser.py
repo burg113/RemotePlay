@@ -17,6 +17,7 @@ key_dict = {
     "Key.right": Key.right,
     "Key.up": Key.up,
     "Key.down": Key.down,
+    "Key.backspace":Key.backspace,
 
     "Key.f1":Key.f1,
     "Key.f2":Key.f2,

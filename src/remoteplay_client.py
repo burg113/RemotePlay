@@ -20,4 +20,5 @@ if __name__ == "__main__":
     while True:
         time.sleep(0.02)
         if key_listener.input_obj.has_deltas():
-            client.send(key_listener.input_obj.serialize_delta())
+            client.send(key_listener.input_obj.serialize())
+            #client.send(key_listener.input_obj.serialize_delta())

@@ -1,63 +1,64 @@
-import pynput
-from pynput.keyboard import Key
-
-
-keyboard = pynput.keyboard.Controller()
+from ahk import AHK
 
 key_dict = {
-    "Key.ctrl_l": Key.ctrl_l,
-    "Key.space": Key.space,
-    "Key.shift": Key.shift,
-    "Key.caps_lock": Key.caps_lock,
-    "Key.cmd": Key.cmd,
-    "Key.alt_l": Key.alt_l,
-    "Key.tab": Key.tab,
-    "Key.alt_gr": Key.alt_gr,
-    "Key.ctrl_r": Key.ctrl_r,
-    "Key.menu": Key.menu,
+    "Key.ctrl_l": "control",
+    "Key.space": "space",
+    "Key.shift": "shift",
+    "Key.caps_lock": "capsLock",
+    "Key.cmd": "command",
+    "Key.alt_l": "alt",
+    "Key.tab": "tab",
+    "Key.alt_gr": "altgr",
+    "Key.ctrl_r": "control",
+    "Key.menu": "menu",
+    "Key.backspace": "backspace",
+    "Key.enter": "enter",
+    "Key.esc": "e   scape",
 
-    "Key.left": Key.left,
-    "Key.right": Key.right,
-    "Key.up": Key.up,
-    "Key.down": Key.down,
+    "Key.shift_r": "shift_r",
+    "Key.delete": "delete",
+    "Key.insert": "insert",
+    "Key.scroll_lock": "scroll_lock",
+    "Key.pause": "pause",
+    "Key.print_screen": "print_screen",
 
-    "Key.backspace": Key.backspace,
-    "Key.enter": Key.enter,
-    "Key.esc": Key.esc,
-    "Key.shift_r": Key.shift_r,
-    "Key.delete": Key.delete,
-    "Key.insert": Key.insert,
-    "Key.scroll_lock": Key.scroll_lock,
-    "Key.pause": Key.pause,
-    "Key.print_screen": Key.print_screen,
+    "Key.left": "left",
+    "Key.right": "right",
+    "Key.up": "up",
+    "Key.down": "down",
 
-    "Key.f1": Key.f1,
-    "Key.f2": Key.f2,
-    "Key.f3": Key.f3,
-    "Key.f4": Key.f4,
-    "Key.f5": Key.f5,
-    "Key.f6": Key.f6,
-    "Key.f7": Key.f7,
-    "Key.f8": Key.f8,
-    "Key.f9": Key.f9,
-    "Key.f10": Key.f10,
-    "Key.f11": Key.f11,
-    "Key.f12": Key.f12
+    "Key.f1": "F1",
+    "Key.f2": "F2",
+    "Key.f3": "F3",
+    "Key.f4": "F4",
+    "Key.f5": "F5",
+    "Key.f6": "F6",
+    "Key.f7": "F7",
+    "Key.f8": "F8",
+    "Key.f9": "F9",
+    "Key.f10": "F10",
+    "Key.f11": "F11",
+    "Key.f12": "F12"
 }
+
+ahk = AHK()
 
 
 def press(key_object):
     for k in key_object.key_inputs:
-        key = None
+        key = ""
         if key_dict.__contains__(k):
             key = key_dict[k]
         else:
             try:
-                key = pynput.keyboard.KeyCode(int(k))
+                key = chr(int(k))
             except ValueError:
-                print("cannot press", k)
-                return
+                print("key:", k, "could not be pressed")
+
         if key_object.key_inputs[k] == 1:
-            keyboard.press(key)
+            print("pressing", key)
+            ahk.key_down(key, False)
+
         if key_object.key_inputs[k] == 0:
-            keyboard.release(key)
+            print("releasing", key)
+            ahk.key_up(key, False)

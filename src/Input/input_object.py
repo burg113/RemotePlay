@@ -9,7 +9,7 @@ class InputObject:
     scalar_inputs_delta = {}
 
     def has_deltas(self):
-        return len(self.key_inputs_delta)>0 or len(self.scalar_inputs_delta)>0
+        return len(self.key_inputs_delta) > 0 or len(self.scalar_inputs_delta) > 0
 
     def __init__(self, serialized=None):
         self.key_inputs = {}
@@ -19,6 +19,14 @@ class InputObject:
 
     def serialize(self):
         return pickle.dumps((self.key_inputs, self.scalar_inputs))
+
+    def serialize_chunks(self, max_chunksize):
+        chunks = []
+        for i in range(0, len(self.key_inputs), max_chunksize):
+            chunks.append(pickle.dumps((self.key_inputs[i:i + max_chunksize], {})))
+        for i in range(0, len(self.scalar_inputs), round(max_chunksize / 2)):
+            chunks.append(pickle.dumps(({}, self.scalar_inputs[i:i + round(max_chunksize / 2)])))
+        return chunks
 
     def serialize_delta(self):
         serialized = pickle.dumps((self.key_inputs_delta, self.scalar_inputs_delta))

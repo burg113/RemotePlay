@@ -1,6 +1,19 @@
+"""
+
+    The default max length of a send bytestream is 16380 (128^2 - 2 - 1).
+    It can be increased by setting
+
+"""
+import math
 import socket
 import uuid as unique_id
 from multiprocessing import Process
+
+MAX_MESSAGE_LENGTH = 8192
+
+def send(conn, msg):
+    conn.sendall(msg)
+
 
 class Server:
     sock = None
@@ -10,11 +23,11 @@ class Server:
     def default_callback(uuid, data, send_back):
         print("received:-", data, "-", "from", uuid, "no callback function configured")
 
-    def __init__(self, port, callback=default_callback, chunksize=1024, host_ip="127.0.0.1"):
+    def __init__(self, port, callback=default_callback, chunksize=MAX_MESSAGE_LENGTH, host_ip="0.0.0.0"):
         self.callback = callback
         self.host(host_ip, port, chunksize)
 
-    def host(self, host_ip, port, chunksize=1024):
+    def host(self, host_ip, port, chunksize=MAX_MESSAGE_LENGTH):
         self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
         self.sock.bind((host_ip, port))
@@ -26,12 +39,22 @@ class Server:
             self.connections.append([p, conn, addr])
             p.start()
 
+    class Connection:
+        conn = None
+
+        def __init__(self, conn):
+            self.conn = conn
+
+        def send(self, msg):
+            send(self.conn, msg)
+
     def on_new_client(self, conn, addr, uuid, chunksize):
         print(f"Connected: {addr}", uuid)
         while True:
             try:
                 data = conn.recv(chunksize)
-                self.callback(uuid, data, conn.sendall)
+                connection = self.Connection(conn)
+                self.callback(uuid, data, connection.send)
             except ConnectionResetError:
                 break
         print(f"Disconnected: {addr}", uuid)
@@ -44,30 +67,32 @@ class Server:
 
 
 class Client:
-    callback = None
-    sock = None
-    process = None
+    # callback, sock, process
 
     def default_callback(data, send_back):
         print("received:-", data, "- no callback function configured")
         pass
 
-    def __init__(self, host, port, callback=default_callback):
+    def __init__(self, host, port, callback=default_callback, chunksize=MAX_MESSAGE_LENGTH):
         self.callback = callback
-        self.connect(host, port)
+        self.connect(host, port, chunksize)
 
-    def listen(self, sock, callback):
+    def listen(self, sock, callback, chunksize=MAX_MESSAGE_LENGTH):
         while True:
-            data = sock.recv(1024)
-            callback(data, sock.sendall)
+            try:
+                data = sock.recv(32768)
+                callback(data, self.send)
+            except ConnectionResetError:
+                break
+        print(f"Disconnected")
 
-    def connect(self, host, port):
+    def connect(self, host, port,chunksize=MAX_MESSAGE_LENGTH):
         self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.sock.connect((host, port))
         print("connected")
 
-        self.process = Process(target=self.listen, args=(self.sock, self.callback))
+        self.process = Process(target=self.listen, args=(self.sock, self.callback,chunksize))
         self.process.start()
 
     def send(self, data):
-        self.sock.sendall(data)
+        send(self.sock, data)

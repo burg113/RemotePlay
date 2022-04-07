@@ -7,6 +7,6 @@ PORT = 5000
 def received(data, send_back):
     print("received:-", data)
 
-
 if __name__ == "__main__":
-    networking.Client(HOST, PORT, received)
+    client = networking.Client(HOST, PORT, received)
+    client.send(b"Hello")

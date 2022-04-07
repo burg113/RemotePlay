@@ -14,6 +14,7 @@ import time
 from Networking import networking
 from Input import input_object
 from Input import key_presser
+from Input import mouse_mover
 import pynput
 
 PORT = 5000
@@ -33,7 +34,11 @@ def press_keys(data):
     delta = input_object.InputObject()
     delta.deserialize_delta(data)
     print(delta.key_inputs)
-    key_presser.press(delta)
+    key_presser.press(delta.key_inputs)
+
+    mouse_mover.move(delta.scalar_inputs)
+
+
 
 
 """ if time.time() - last_sync > SYNCDURATION:

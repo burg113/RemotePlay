@@ -44,8 +44,8 @@ key_dict = {
 ahk = AHK()
 
 
-def press(key_object):
-    for k in key_object.key_inputs:
+def press(key_inputs):
+    for k in key_inputs:
         key = ""
         if key_dict.__contains__(k):
             key = key_dict[k]
@@ -55,10 +55,10 @@ def press(key_object):
             except ValueError:
                 print("key:", k, "could not be pressed")
 
-        if key_object.key_inputs[k] == 1:
+        if key_inputs[k] == 1:
             print("pressing", key)
             ahk.key_down(key, False)
 
-        if key_object.key_inputs[k] == 0:
+        if key_inputs[k] == 0:
             print("releasing", key)
             ahk.key_up(key, False)

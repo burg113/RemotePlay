@@ -3,6 +3,7 @@ import itertools
 
 accept_repeated_clicks = True
 
+
 class InputObject:
     key_inputs = {}
     key_inputs_delta = {}
@@ -49,11 +50,28 @@ class InputObject:
         for key in scalar_inputs_delta:
             self.scalar_inputs[key] = scalar_inputs_delta[key]
 
-    def input(self, key, value, is_scalar=False):
+    def input(self, key, value, is_scalar=False, is_delta=False):
         if is_scalar:
-            if accept_repeated_clicks or not (self.scalar_inputs.__contains__(key) and self.scalar_inputs[key] == value):
-                self.scalar_inputs[key] = value
-                self.scalar_inputs_delta[key] = value
+            if is_delta:
+                if not self.scalar_inputs.__contains__(key):
+                    print("--------------- 1")
+                    self.scalar_inputs[key] = value
+                else:
+                    self.scalar_inputs[key] += value
+                    print("--------------- 2")
+
+                if value is not 0:
+                    if not self.scalar_inputs_delta.__contains__(key):
+                        print("--------------- 3")
+                        self.scalar_inputs_delta[key] = value
+                    else:
+                        self.scalar_inputs_delta[key] += value
+                        print("--------------- 4")
+
+            else:
+                if not (self.scalar_inputs.__contains__(key) and self.scalar_inputs[key] == value):
+                    self.scalar_inputs[key] = value
+                    self.scalar_inputs_delta[key] = value
         else:
             if accept_repeated_clicks or not (self.key_inputs.__contains__(key) and self.key_inputs[key] == value):
                 self.key_inputs[key] = value

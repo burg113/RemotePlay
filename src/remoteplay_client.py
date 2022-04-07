@@ -24,7 +24,7 @@ if __name__ == "__main__":
 
     while True:
         time.sleep(0.01)
-        input_listener.get_mouse_delta()
+        # input_listener.get_mouse_delta()
         print(input_listener.input_obj.scalar_inputs)
         print(input_listener.input_obj.key_inputs)
         if input_listener.input_obj.has_deltas():

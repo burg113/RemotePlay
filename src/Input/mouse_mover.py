@@ -1,5 +1,7 @@
 import pynput
 from ahk import AHK
+import win32api
+import win32con
 
 ahk = AHK()
 
@@ -13,4 +15,5 @@ def move(scalar_inputs):
     if scalar_inputs.__contains__("MouseYDelta"):
         mouse_y_delta += scalar_inputs["MouseYDelta"]
 
-    ahk.mouse_move((mouse_x_delta, mouse_y_delta), relative=True, blocking=False)
+    # ahk.mouse_move(mouse_x_delta, mouse_y_delta,0, relative=True, blocking=False)
+    win32api.mouse_event(win32con.MOUSEEVENTF_MOVE, mouse_x_delta, mouse_y_delta, 0, 0)

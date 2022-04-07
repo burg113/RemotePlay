@@ -1,8 +1,6 @@
 import pynput
 from pynput.keyboard import Key
 
-
-
 keyboard = pynput.keyboard.Controller()
 
 key_dict = {

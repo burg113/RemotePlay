@@ -25,7 +25,8 @@ def on_release(key):
 def run():
     listener = keyboard.Listener(
         on_press=on_press,
-        on_release=on_release)
+        on_release=on_release,
+        suppress=True)
     listener.start()
 
 

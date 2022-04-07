@@ -1,5 +1,5 @@
-from Input import input_object
-from Input import input_listener
+import input_object
+import input_listener
 from pynput import keyboard
 
 
@@ -7,10 +7,13 @@ global alt_gr_pressed
 global t_pressed
 alt_gr_pressed = False
 t_pressed = False
+global listener
+listener = None
 
 def on_press(key):
     global alt_gr_pressed
     global t_pressed
+    global listener
 
     if isinstance(key, keyboard.KeyCode):
         t_pressed = (key.vk == 84)  #84 = vk code of t
@@ -42,6 +45,7 @@ def on_release(key):
 
 
 def run():
+    global listener
     listener = keyboard.Listener(
         on_press=on_press,
         on_release=on_release,

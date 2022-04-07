@@ -1,13 +1,11 @@
 """
     todo:
-        test multiple input computers
-        change output library to -Auto Hot Key-
+        block keys for users
         support mouse
         support controller
         make program customisable though jsons
         make prints toggleable
         add different modes for handling multiple inputs
-        block keys for users
 
 """
 

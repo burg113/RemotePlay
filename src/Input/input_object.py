@@ -1,6 +1,7 @@
 import pickle
 import itertools
 
+accept_repeated_clicks = True
 
 class InputObject:
     key_inputs = {}
@@ -50,10 +51,10 @@ class InputObject:
 
     def input(self, key, value, is_scalar=False):
         if is_scalar:
-            if not (self.scalar_inputs.__contains__(key) and self.scalar_inputs[key] == value):
+            if accept_repeated_clicks or not (self.scalar_inputs.__contains__(key) and self.scalar_inputs[key] == value):
                 self.scalar_inputs[key] = value
                 self.scalar_inputs_delta[key] = value
         else:
-            if not (self.key_inputs.__contains__(key) and self.key_inputs[key] == value):
+            if accept_repeated_clicks or not (self.key_inputs.__contains__(key) and self.key_inputs[key] == value):
                 self.key_inputs[key] = value
                 self.key_inputs_delta[key] = value

@@ -3,20 +3,39 @@ from Input import input_listener
 from pynput import keyboard
 
 
+global alt_gr_pressed
+global t_pressed
+alt_gr_pressed = False
+t_pressed = False
 
 def on_press(key):
+    global alt_gr_pressed
+    global t_pressed
+
     if isinstance(key, keyboard.KeyCode):
+        t_pressed = (key.vk == 84)  #84 = vk code of t
         input_listener.input_obj.input(str(key.vk), 1)
     else:
+        alt_gr_pressed = (key == keyboard.Key.alt_gr)
         input_listener.input_obj.input(str(key), 1)
+    if alt_gr_pressed and t_pressed:
+        listener._suppress = not listener._suppress
     print(input_listener.input_obj.key_inputs)
     pass
 
 
 def on_release(key):
+    global alt_gr_pressed
+    global t_pressed
+
     if isinstance(key, keyboard.KeyCode):
+        if key.vk == 84:
+            #84 = vk code of t
+            t_pressed = False
         input_listener.input_obj.input(str(key.vk), 0)
     else:
+        if key == keyboard.Key.alt_gr:
+            alt_gr_pressed = False
         input_listener.input_obj.input(str(key), 0)
     print(input_listener.input_obj.key_inputs)
     pass

@@ -11,8 +11,10 @@ PORT = 5000
 last_sync = time.time()
 SYNCS_PER_SECOND = 1
 
-def received(data, send_back):
-    print("received:-", data)
+
+def received(data, respond, ip):
+    print("received:-", data, "from", ip)
+
 
 if __name__ == "__main__":
     key_listener.run()
@@ -24,6 +26,6 @@ if __name__ == "__main__":
         if key_listener.input_obj.has_deltas():
             client.send(key_listener.input_obj.serialize_delta())
 
-        if time.time() - last_sync > 1/SYNCS_PER_SECOND:
+        if time.time() - last_sync > 1 / SYNCS_PER_SECOND:
             for chunk in key_listener.input_obj.serialize_chunks(4):
                 client.send(chunk)

@@ -17,10 +17,13 @@ def on_press(key):
 
     if isinstance(key, keyboard.KeyCode):
         t_pressed = (key.vk == 84)  # 84 = vk code of t
-        input_listener.input_obj.input(str(key.vk), 1)
+        if input_listener.suppress_inputs:
+            input_listener.input_obj.input(str(key.vk), 1)
     else:
         alt_gr_pressed = (key == keyboard.Key.alt_gr)
-        input_listener.input_obj.input(str(key), 1)
+        if input_listener.suppress_inputs:
+            input_listener.input_obj.input(str(key), 1)
+
     if alt_gr_pressed and t_pressed:
         input_listener.suppress_inputs = not input_listener.suppress_inputs
         listener._suppress = input_listener.suppress_inputs

@@ -1,4 +1,3 @@
-from Input import input_object
 from Input import input_listener
 from pynput import keyboard
 

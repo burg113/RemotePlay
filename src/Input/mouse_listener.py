@@ -3,12 +3,12 @@
 import pynput
 import win32api
 from Input import input_listener
+from pynput.mouse import Controller
 
 width = win32api.GetSystemMetrics(0)
 height = win32api.GetSystemMetrics(1)
 midWidth = int((width + 1) / 2)
 midHeight = int((height + 1) / 2)
-from pynput.mouse import Button, Controller
 
 mouse_controller = Controller()
 
@@ -39,7 +39,7 @@ def on_move(x, y):
 
 
 def on_click(x, y, button, pressed):
-    input_listener.input_obj.input(str(button).replace("Button","M"), pressed)
+    input_listener.input_obj.input(str(button).replace("Button", "M"), pressed)
 
 
 def on_scroll(x, y, dx, dy):

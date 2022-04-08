@@ -47,8 +47,8 @@ mouse_key_dict = {
     "M.middle": "MButton",
 }
 mouse_wheel_dict = {
-    "M.scroll_x" : ("WheelDown","WheelUp"),
-    "M.scroll_y" : ("WheelLeft","WheelRight")
+    "M.scroll_x": ("WheelDown", "WheelUp"),
+    "M.scroll_y": ("WheelLeft", "WheelRight")
 }
 
 ahk = AHK()

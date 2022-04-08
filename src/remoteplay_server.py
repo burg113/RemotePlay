@@ -1,33 +1,24 @@
 """
     todo:
-        block keys for users
-        support mouse
+        fix scroll wheel
         support controller
         make program customisable though jsons
-        make prints toggleable
+        (make prints toggleable)
         add different modes for handling multiple inputs
 
 """
-
-import time
 
 from Networking import networking
 from Input import input_object
 from Input import key_presser
 from Input import mouse_mover
-import pynput
 
 PORT = 5000
 global key_input
 key_input = input_object.InputObject()
 
-global last_sync
-last_sync = time.time()
-SYNCDURATION = 1
-
 
 def press_keys(data):
-    global last_sync
     global key_input
     key_input.deserialize_delta(data)
 
@@ -37,17 +28,6 @@ def press_keys(data):
     key_presser.press(delta.key_inputs)
 
     mouse_mover.move(delta.scalar_inputs)
-
-
-
-
-""" if time.time() - last_sync > SYNCDURATION:
-        # key_presser.press(key_input)
-        last_sync = time.time()
-        print("-------------------------------------------------------\n")
-        print(key_input.key_inputs)
-        print("-------------------------------------------------------\n")
-"""
 
 
 def received(data, respond, uuid):

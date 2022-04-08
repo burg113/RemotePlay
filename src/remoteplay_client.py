@@ -6,7 +6,7 @@ from Input import input_object
 
 # HOST = "127.0.0.1"
 
-HOST = "80.137.68.34"
+HOST = "80.137.72.157"
 PORT = 5000
 
 last_sync = time.time()
@@ -24,7 +24,7 @@ if __name__ == "__main__":
 
     while True:
         time.sleep(0.01)
-        # input_listener.get_mouse_delta()
+        input_listener.get_mouse_delta()
         print(input_listener.input_obj.scalar_inputs)
         print(input_listener.input_obj.key_inputs)
         if input_listener.input_obj.has_deltas():

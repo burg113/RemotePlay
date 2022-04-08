@@ -4,6 +4,8 @@ from Input import mouse_listener
 
 input_obj = input_object.InputObject()
 
+suppress_inputs = True
+
 
 def get_mouse_delta():
     mouse_listener.get_mouse_delta()

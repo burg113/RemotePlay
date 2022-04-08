@@ -41,6 +41,16 @@ key_dict = {
     "Key.f12": "F12"
 }
 
+mouse_key_dict = {
+    "M.left": "LButton",
+    "M.right": "RButton",
+    "M.middle": "MButton",
+}
+mouse_wheel_dict = {
+    "M.scroll_x" : ("WheelDown","WheelUp"),
+    "M.scroll_y" : ("WheelLeft","WheelRight")
+}
+
 ahk = AHK()
 
 
@@ -49,6 +59,20 @@ def press(key_inputs):
         key = ""
         if key_dict.__contains__(k):
             key = key_dict[k]
+        elif mouse_key_dict.__contains__(k):
+            key = mouse_key_dict[k]
+        elif mouse_wheel_dict.__contains__(k):
+            print(key_inputs)
+            if key_inputs[k] == -1:
+                key = mouse_wheel_dict[k][0]
+                print("---1")
+            if key_inputs[k] == 1:
+                print("---2")
+                key = mouse_wheel_dict[k][1]
+            print("pressing:" + str(key))
+            ahk.key_press(key)
+            continue
+
         else:
             try:
                 key = chr(int(k))

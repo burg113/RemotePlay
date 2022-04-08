@@ -11,8 +11,14 @@ def get_mouse_delta():
     mouse_listener.get_mouse_delta()
 
 
+def update():
+    mouse_listener.update()
+
+
 def run():
     key_listener.run()
+
+    mouse_listener.run()
 
 
 if __name__ == "__main__":

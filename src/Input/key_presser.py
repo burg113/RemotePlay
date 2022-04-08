@@ -47,8 +47,8 @@ mouse_key_dict = {
     "M.middle": "MButton",
 }
 mouse_wheel_dict = {
-    "M.scroll_x": ("WheelDown", "WheelUp"),
-    "M.scroll_y": ("WheelLeft", "WheelRight")
+    "M.scroll_y": ("WheelDown", "WheelUp"),
+    "M.scroll_x": ("WheelLeft", "WheelRight")
 }
 
 ahk = AHK()
@@ -70,7 +70,7 @@ def press(key_inputs):
                 print("---2")
                 key = mouse_wheel_dict[k][1]
             print("pressing:" + str(key))
-            ahk.key_press(key)
+            ahk.key_press(key, blocking=False)
             continue
 
         else:

@@ -1,6 +1,5 @@
 """
     todo:
-        fix scroll wheel
         support controller
         make program customisable though jsons
         (make prints toggleable)

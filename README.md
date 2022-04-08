@@ -4,17 +4,14 @@ Remote Play is a console application written in python that allows you to transf
 It allows for all sorts of fun ways to play with your friends online and still share controlls as if you were sitting right next to them.
 
 ##Install
-First download the code from this repository.
+First download the code from this repository [green "Code" button -> "Download ZIP"] and unzip it.
+
+
 
 Then install python (and pip) if you do not have already and add it to the path variable.
+If everything is working correctly you should be able to execute the pythoncheck.bat file without any errors (you should be given the version of both your python and pip version).
 
-now open cmd and execute:
-
-pip install pynput
-
-pip install pywin32
-
-...
+Now execute the pipinstalls.bat file in order to get all the required python library's.
 
 If you are the one who is hosting the server you will also have to port forward port 5000 for TCP.
 Then you will have to give your friends your public ip (which you can find here: myip.com) and they will have to enter it in their programs. 

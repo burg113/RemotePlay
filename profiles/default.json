@@ -1,0 +1,41 @@
+{
+  "ip" : "79.244.152.71",
+  "port" : 30832,
+
+  "controls" : {
+    "enable_keyboard" : 1,
+    "enable_mouse" : 1,
+
+    "enable_controller" : "not implemented",
+
+    "enable_key_whitelist" : 0,
+    "key_whitelist" : [
+    ],
+
+    "enable_key_conversion" : 0,
+    "key_conversion" : {
+
+    },
+
+    "enable_key_blacklist" : 0,
+    "key_blacklist" : [
+
+    ]
+
+  },
+
+  "server" : {
+    "enable_ip_whitelist" : 0,
+    "ip_whitelist" :  [
+
+    ],
+
+    "enable_ip_whitelist" : 0,
+    "ip_blacklist" : [
+
+    ]
+
+
+  }
+
+}

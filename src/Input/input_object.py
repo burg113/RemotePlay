@@ -1,7 +1,7 @@
 import pickle
 import itertools
 
-accept_repeated_clicks = True
+accept_repeated_clicks = False
 
 
 class InputObject:

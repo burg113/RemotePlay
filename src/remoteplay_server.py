@@ -6,6 +6,7 @@
         add different modes for handling multiple inputs
 
 """
+import json
 import time
 
 from Networking import networking
@@ -16,6 +17,16 @@ from Input import mouse_mover
 PORT = 5000
 global key_input
 key_input = input_object.InputObject()
+
+
+def load_settings():
+    global HOST, PORT
+    with open("../profiles/default.json", "r") as f:
+        data = json.load(f)
+        HOST = data["ip"]
+        PORT = data["port"]
+
+    pass
 
 
 def press_keys(data):

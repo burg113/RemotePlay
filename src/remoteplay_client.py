@@ -1,3 +1,4 @@
+import json
 import time
 
 import win32api
@@ -6,9 +7,8 @@ from Networking import networking
 from Input import input_listener
 from Input import input_object
 
-# HOST = "127.0.0.1"
-HOST = "79.244.152.71"
-PORT = 5000
+HOST = ""
+PORT = 0
 
 last_sync = time.time()
 
@@ -22,7 +22,25 @@ height = win32api.GetSystemMetrics(1)
 midWidth = int((width + 1) / 2)
 midHeight = int((height + 1) / 2)
 
+
+def load_settings():
+    global HOST, PORT
+    with open("../profiles/default.json", "r") as f:
+        data = json.load(f)
+        HOST = data["ip"]
+        PORT = data["port"]
+
+        controls_data = data["controls"]
+        input_listener.enable_keyboard = controls_data["enable_keyboard"]
+        input_listener.enable_mouse = controls_data["enable_mouse"]
+
+
+pass
+
+
 if __name__ == "__main__":
+    load_settings()
+
     input_listener.run()
 
     client = networking.Client(HOST, PORT, received)
@@ -40,4 +58,3 @@ if __name__ == "__main__":
             input_o = input_object.InputObject()
             input_o.deserialize(msg)
             print(input_o.key_inputs, "\t", msg)
-

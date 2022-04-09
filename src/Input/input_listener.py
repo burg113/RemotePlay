@@ -6,19 +6,25 @@ input_obj = input_object.InputObject()
 
 suppress_inputs = True
 
+enable_keyboard = True
+enable_mouse = True
+
 
 def get_mouse_delta():
     mouse_listener.get_mouse_delta()
 
 
 def update():
-    mouse_listener.update()
+    if enable_mouse:
+        mouse_listener.update()
 
 
 def run():
-    key_listener.run()
+    if enable_keyboard:
+        key_listener.run()
 
-    mouse_listener.run()
+    if enable_mouse:
+        mouse_listener.run()
 
 
 if __name__ == "__main__":

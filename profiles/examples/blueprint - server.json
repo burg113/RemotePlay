@@ -1,0 +1,44 @@
+{
+
+  "connection" : {
+    "ip" : "Doesn't matter [can be deleted]",
+    "port" : "The port you want to host the server. You will also have to port forward this port in your router settings for TCP.",
+
+    "enable_ip_whitelist" : "0 = off | 1 = on",
+    "ip_whitelist" :  [
+      "ip address that can connect to your server",
+      "ip 1",
+      "ip 2",
+      "..."
+    ],
+
+    "enable_ip_whitelist" : "0 = off | 1 = on",
+    "ip_blacklist" : [
+      "ip address that cannot connect to your server"
+      "ip 1",
+      "ip 2",
+      "..."
+    ]
+  },
+
+
+  "key" : {
+    "enable_key_whitelist" : "0 = off | 1 = on",
+    "key_whitelist" : [
+      "keys you that should be able to be pressed",
+      "key 1",
+      "key 2",
+      "..."
+    ],
+
+    "enable_key_blacklist" : "0 = off | 1 = on",
+    "key_blacklist" : [
+      "list of keys you that should be able to be pressed",
+      "key 1",
+      "key 2",
+      "..."
+    ]
+
+  }
+
+}

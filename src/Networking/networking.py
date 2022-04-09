@@ -81,7 +81,9 @@ class Server:
         self.sock = None
         self.connections = []
 
+        # self.process = Process(target=self.host, args=(host_ip, port, chunksize))
         self.host(host_ip, port, chunksize)
+        # self.process.start()
 
     def host(self, host_ip, port, chunksize=SOCKET_CHUNK_SIZE):
         self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -89,6 +91,9 @@ class Server:
         self.sock.bind((host_ip, port))
         self.sock.listen()
 
+        self.run()
+
+    def run(self):
         while True:
             conn, addr = self.sock.accept()
             this_id = unique_id.uuid4()

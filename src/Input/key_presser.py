@@ -1,3 +1,4 @@
+import win32api
 from ahk import AHK
 
 key_dict = {
@@ -62,17 +63,19 @@ def press(key_inputs):
         elif mouse_key_dict.__contains__(k):
             key = mouse_key_dict[k]
         elif mouse_wheel_dict.__contains__(k):
-            print(key_inputs)
-            if key_inputs[k] == -1:
-                key = mouse_wheel_dict[k][0]
-                print("---1")
-            if key_inputs[k] == 1:
-                print("---2")
-                key = mouse_wheel_dict[k][1]
-            print("pressing:" + str(key))
-            ahk.key_press(key, blocking=False)
-            continue
 
+            for i in range(abs(key_inputs[k])):
+                key_inputs[k] /= abs(key_inputs[k])
+                if key_inputs[k] == -1:
+                    key = mouse_wheel_dict[k][0]
+                    print("---1")
+                if key_inputs[k] == 1:
+                    print("---2")
+                    key = mouse_wheel_dict[k][1]
+                print("pressing:" + str(key))
+                ahk.key_press(key, blocking=False)
+
+            continue
         else:
             try:
                 key = chr(int(k))

@@ -6,6 +6,7 @@
         add different modes for handling multiple inputs
 
 """
+import time
 
 from Networking import networking
 from Input import input_object
@@ -37,3 +38,7 @@ def received(data, respond, uuid):
 if __name__ == "__main__":
     global server
     server = networking.Server(PORT, received, host_ip="0.0.0.0")
+
+    while True:
+        print("hi")
+        time.sleep(1)

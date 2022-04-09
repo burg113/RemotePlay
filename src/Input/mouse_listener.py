@@ -18,12 +18,12 @@ def update():
 
         # somehow hide cursor?!
 
-        print("\t\t\t", input_listener.input_obj.scalar_inputs_delta)
+        # print("\t\t\t", input_listener.input_obj.scalar_inputs_delta)
 
         new_mouse_position = mouse_controller.position
         mouse_delta = (new_mouse_position[0] - midWidth, new_mouse_position[1] - midHeight)
 
-        print(mouse_delta)
+        # print(mouse_delta)
         input_listener.input_obj.input("MouseXDelta", mouse_delta[0], is_scalar=True, is_delta=True)
         input_listener.input_obj.input("MouseYDelta", mouse_delta[1], is_scalar=True, is_delta=True)
 
@@ -39,12 +39,15 @@ def on_move(x, y):
 
 
 def on_click(x, y, button, pressed):
-    input_listener.input_obj.input(str(button).replace("Button", "M"), pressed)
+    if input_listener.suppress_inputs:
+        input_listener.input_obj.input(str(button).replace("Button", "M"), pressed)
 
 
 def on_scroll(x, y, dx, dy):
-    input_listener.input_obj.input("M.scroll_x", dx)
-    input_listener.input_obj.input("M.scroll_y", dy)
+
+    if input_listener.suppress_inputs:
+        input_listener.input_obj.input("M.scroll_x", dx)
+        input_listener.input_obj.input("M.scroll_y", dy)
 
 
 def run():

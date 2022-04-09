@@ -32,3 +32,5 @@ When the server is closed all connected clients will crash upon any input.
 Scrolling on a trackpad (scrolling gesture) will not work.
 
 Similarly, when scrolling to fast (can only be achieved on trackpad or with infinite scroll wheel) a lot of latency will be introduced. You will have to wait untill all of the scroll inputs are executed.
+
+Keys seem to be held even though they were released and seem to be released even though they were held at times. (Working on it)

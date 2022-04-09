@@ -34,7 +34,7 @@ def int_to_bytes(i, n=CONTROL_BYTE_LENGTH):
 def int_from_bytes(b):
     i = 0
     for c in range(len(b)):
-        i += b[c] * 128 ** (c)
+        i += b[c] * 128 ** c
     return i
 
 
@@ -68,30 +68,28 @@ def default_callback(data, respond, source):
 
 
 class Server:
-    # sock, callback, connections, buffer, CONTROL_BYTE_LENGTH
 
-    def set_max_message_length(self, length):
-        self.CONTROL_BYTE_LENGTH = math.ceil(math.log(length + math.ceil(math.log(length, 128)), 128))
-
-    def __init__(self, port, callback=default_callback, chunksize=SOCKET_CHUNK_SIZE, host_ip="0.0.0.0"):
+    def __init__(self, port, callback=default_callback, chunksize=SOCKET_CHUNK_SIZE, host_ip="0.0.0.0", blocking=True):
         self.callback = callback
         self.CONTROL_BYTE_LENGTH = CONTROL_BYTE_LENGTH
         self.CHUNK_SIZE = SOCKET_CHUNK_SIZE
 
         self.sock = None
         self.connections = []
+        self.process = None
 
-        # self.process = Process(target=self.host, args=(host_ip, port, chunksize))
-        self.host(host_ip, port, chunksize)
-        # self.process.start()
+        self.host(host_ip, port, chunksize, blocking)
 
-    def host(self, host_ip, port, chunksize=SOCKET_CHUNK_SIZE):
+    def host(self, host_ip, port, chunksize=SOCKET_CHUNK_SIZE, blocking=True):
         self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
         self.sock.bind((host_ip, port))
         self.sock.listen()
 
-        self.run()
+        self.process = Process(target=self.run)
+        self.process.start()
+        if blocking:
+            self.process.join()
 
     def run(self):
         while True:
@@ -127,19 +125,23 @@ class Server:
     def broadcast(self, msg):
         for connection in self.connections:
             conn, addr, uuid = connection
-            # todo: asdasd
             print("hi")
             try:
-                send(conn, b"soemone joined")
+                send(conn, b"a new client joined")
             except ConnectionResetError:
 
                 pass
 
+    def join(self):
+        self.process.join()
+
+    def set_max_message_length(self, length):
+        self.CONTROL_BYTE_LENGTH = math.ceil(math.log(length + math.ceil(math.log(length, 128)), 128))
+
 
 class Client:
-    # callback, sock, process, buffer, CONTROL_BYTE_LENGTH
 
-    def __init__(self, host, port, callback=default_callback, chunksize=SOCKET_CHUNK_SIZE):
+    def __init__(self, host, port, callback=default_callback, chunksize=SOCKET_CHUNK_SIZE, blocking=True):
         self.callback = callback
         self.CONTROL_BYTE_LENGTH = CONTROL_BYTE_LENGTH
         self.CHUNK_SIZE = SOCKET_CHUNK_SIZE
@@ -157,12 +159,18 @@ class Client:
 
         print(f"Disconnected")
 
-    def connect(self, host, port, chunksize=SOCKET_CHUNK_SIZE):
+    def connect(self, host, port, chunksize=SOCKET_CHUNK_SIZE, blocking=True):
         self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.sock.connect((host, port))
 
         self.process = Process(target=self.on_connection, args=(self.sock,))
         self.process.start()
 
+        if blocking:
+            self.process.join()
+
     def send(self, data):
         send(self.sock, data)
+
+    def join(self):
+        self.process.join()

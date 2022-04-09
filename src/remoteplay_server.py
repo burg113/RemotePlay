@@ -50,10 +50,7 @@ if __name__ == "__main__":
 
     load_settings()
 
-    print("running server on port", PORT,"...")
+    print("running server on port", PORT, "...")
 
     server = networking.Server(PORT, received, host_ip="0.0.0.0")
 
-    while True:
-        print("hi")
-        time.sleep(1)

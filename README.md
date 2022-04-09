@@ -31,6 +31,6 @@ In case any problems occur please contact us. Thank you for trying Remote Play!
 
 When the server is closed all connected clients will crash upon any input.
 
-Scrolling on a mouse pad (scrolling gesture) will not work.
+Scrolling on a trackpad (scrolling gesture) will not work.
 
-Similarly, when scrolling to fast (can only be achieved on mouse pad or with infinite scroll wheel) a lot of latency will be introduced. You will have to wait untill all of the scroll inputs are executed.
+Similarly, when scrolling to fast (can only be achieved on trackpad or with infinite scroll wheel) a lot of latency will be introduced. You will have to wait untill all of the scroll inputs are executed.

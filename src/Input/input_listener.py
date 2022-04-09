@@ -10,6 +10,18 @@ enable_keyboard = True
 enable_mouse = True
 
 
+def toggle_suppress_inputs():
+    do_suppress_inputs(not suppress_inputs)
+
+
+def do_suppress_inputs(val=True):
+    global suppress_inputs
+    suppress_inputs = val
+
+    mouse_listener.do_suppress_inputs(val)
+    key_listener.do_suppress_inputs(val)
+
+
 def get_mouse_delta():
     mouse_listener.get_mouse_delta()
 

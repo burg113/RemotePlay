@@ -48,8 +48,6 @@ if __name__ == "__main__":
     while True:
         time.sleep(0.01)
 
-        input_listener.update()
-
         if input_listener.input_obj.has_deltas():
             msg = input_listener.input_obj.serialize_delta()
             client.send(msg)

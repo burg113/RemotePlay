@@ -12,9 +12,10 @@ midHeight = int((height + 1) / 2)
 
 mouse_controller = Controller()
 
+listener = None
 
-def update():
-    if input_listener.suppress_inputs:
+"""def update():
+    if input_listener.suppress_inputs and False:
 
         # somehow hide cursor?!
 
@@ -32,10 +33,22 @@ def update():
     else:
         # somehow show cursor
         pass
+"""
+
+
+def do_suppress_inputs(val):
+    win32api.SetCursorPos((midWidth, midHeight))
+    listener._suppress = val
 
 
 def on_move(x, y):
-    pass
+    if input_listener.suppress_inputs:
+        print(100 * "-", x, y)
+        input_listener.input_obj.input("MouseXDelta", x, is_scalar=True, is_delta=True)
+        input_listener.input_obj.input("MouseYDelta", y, is_scalar=True, is_delta=True)
+
+        win32api.SetCursorPos((0, 0))
+        pass
 
 
 def on_click(x, y, button, pressed):
@@ -44,15 +57,17 @@ def on_click(x, y, button, pressed):
 
 
 def on_scroll(x, y, dx, dy):
-
     if input_listener.suppress_inputs:
         input_listener.input_obj.input("M.scroll_x", dx)
         input_listener.input_obj.input("M.scroll_y", dy)
 
 
 def run():
+    global listener
     listener = pynput.mouse.Listener(
         on_move=on_move,
         on_click=on_click,
-        on_scroll=on_scroll)
+        on_scroll=on_scroll,
+        suppress=True)
     listener.start()
+    win32api.SetCursorPos((0, 0))

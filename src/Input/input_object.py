@@ -58,7 +58,7 @@ class InputObject:
                 else:
                     self.scalar_inputs[key] += value
 
-                if value is not 0:
+                if value != 0:
                     if not self.scalar_inputs_delta.__contains__(key):
                         self.scalar_inputs_delta[key] = value
                     else:

@@ -9,6 +9,10 @@ global listener
 listener = None
 
 
+def do_suppress_inputs(val):
+    listener._suppress = val
+
+
 def on_press(key):
     global alt_gr_pressed
     global t_pressed
@@ -16,16 +20,19 @@ def on_press(key):
 
     if isinstance(key, keyboard.KeyCode):
         t_pressed = (key.vk == 84)  # 84 = vk code of t
-        if input_listener.suppress_inputs:
+
+        part_of_shortcut = False
+
+        if alt_gr_pressed and t_pressed:
+            part_of_shortcut = True
+            input_listener.toggle_suppress_inputs()
+
+        if input_listener.suppress_inputs and not part_of_shortcut:
             input_listener.input_obj.input(str(key.vk), 1)
     else:
         alt_gr_pressed = (key == keyboard.Key.alt_gr)
         if input_listener.suppress_inputs:
             input_listener.input_obj.input(str(key), 1)
-
-    if alt_gr_pressed and t_pressed:
-        input_listener.suppress_inputs = not input_listener.suppress_inputs
-        listener._suppress = input_listener.suppress_inputs
 
     print(input_listener.input_obj.key_inputs)
     pass

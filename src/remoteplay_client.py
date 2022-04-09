@@ -7,7 +7,7 @@ from Input import input_listener
 from Input import input_object
 
 # HOST = "127.0.0.1"
-HOST = "80.137.72.157"
+HOST = "79.244.152.71"
 PORT = 5000
 
 last_sync = time.time()

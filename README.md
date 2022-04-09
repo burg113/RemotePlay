@@ -4,6 +4,7 @@ Remote Play is a console application written in python that allows you to transf
 It allows for all sorts of fun ways to play with your friends online and still share controlls as if you were sitting right next to them.
 
 ##Install
+
 First download the code from this repository [green "Code" button -> "Download ZIP"] and unzip it.
 
 

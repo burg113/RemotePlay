@@ -9,7 +9,7 @@ key_dict = {
     "Key.space": "space",
     "Key.shift": "Lshift",
     "Key.caps_lock": "capsLock",
-    "Key.cmd": "lwin",
+    "Key.cmd": "Lwin",
     "Key.alt_l": "alt",
     "Key.tab": "tab",
     "Key.alt_gr": "altgr",
@@ -20,11 +20,11 @@ key_dict = {
     "Key.esc": "escape",
 
     "Key.shift_r": "Rshift",
-    "Key.delete": "Delete",
+    "Key.delete": "delete",
     "Key.insert": "insert",
-    "Key.scroll_lock": "ScrollLock",
+    "Key.scroll_lock": "scrollLock",
     "Key.pause": "pause",
-    "Key.print_screen": "PrintScreen",
+    "Key.print_screen": "printScreen",
 
     "Key.left": "left",
     "Key.right": "right",
@@ -42,7 +42,13 @@ key_dict = {
     "Key.f9": "F9",
     "Key.f10": "F10",
     "Key.f11": "F11",
-    "Key.f12": "F12"
+    "Key.f12": "F12",
+
+    "Key.page_up": "a",
+    "Key.page_down": "b",
+    "Key.end": "end",
+    "Key.home": "home",
+
 }
 
 VK_CODE = {'backspace': 0x08,
@@ -52,24 +58,25 @@ VK_CODE = {'backspace': 0x08,
            'shift': 0x10,
            'ctrl': 0x11,
            'alt': 0x12,
+           'altgr': 0x12,
            'pause': 0x13,
            'capsLock': 0x14,
-           'esc': 0x1B,
-           'spacebar': 0x20,
-           'page_up': 0x21,
-           'page_down': 0x22,
+           'escape': 0x1B,
+           'space': 0x20,
+           'pageUp': 0x21,
+           'pageDown': 0x22,
            'end': 0x23,
            'home': 0x24,
-           'left_arrow': 0x25,
-           'up_arrow': 0x26,
-           'right_arrow': 0x27,
-           'down_arrow': 0x28,
+           'left': 0x25,
+           'up': 0x26,
+           'right': 0x27,
+           'down': 0x28,
            'select': 0x29,
            'print': 0x2A,
            'execute': 0x2B,
-           'print_screen': 0x2C,
-           'ins': 0x2D,
-           'del': 0x2E,
+           'printScreen': 0x2C,
+           'insert': 0x2D,
+           'delete': 0x2E,
            'help': 0x2F,
            '0': 0x30,
            '1': 0x31,
@@ -147,10 +154,10 @@ VK_CODE = {'backspace': 0x08,
            'F22': 0x85,
            'F23': 0x86,
            'F24': 0x87,
-           'num_lock': 0x90,
-           'scroll_lock': 0x91,
+           'numLock': 0x90,
+           'scrollLock': 0x91,
            'Lshift': 0xA0,
-           'Rshift ': 0xA1,
+           'Rshift': 0xA1,
            'Lcontrol': 0xA2,
            'Rcontrol': 0xA3,
            'left_menu': 0xA4,
@@ -190,11 +197,16 @@ VK_CODE = {'backspace': 0x08,
            '\\': 0xDC,
            ']': 0xDD,
            "'": 0xDE,
-           '`': 0xC0
+           '`': 0xC0,
+
+           # no text output
+           'Lwin': 0x07,
+           'Rwin': 0x07,
+
            }
 
 SCANCODES = {
-    'esc': [[0x01], [0x81]],
+    'escape': [[0x01], [0x81]],
     '1': [[0x02], [0x82]], '!': [[0x2A, 0x02], [0x82, 0xAA]],
     '2': [[0x03], [0x83]], '@': [[0x2A, 0x03], [0x83, 0xAA]],
     '3': [[0x04], [0x84]], '#': [[0x2A, 0x04], [0x83, 0xAA]],
@@ -226,7 +238,7 @@ SCANCODES = {
     'enter': [[0x1C], [0x9C]],
     '\r': [[0x1C], [0x9C]],
     '\n': [[0x1C], [0x9C]],
-    'ctrl': [[0x1D], [0x9D]],
+    'Lcontrol': [[0x1D], [0x9D]],
     'a': [[0x1E], [0x9E]], 'A': [[0x2A, 0x1E], [0x9E, 0xAA]],
     's': [[0x1F], [0x9F]], 'S': [[0x2A, 0x1F], [0x9F, 0xAA]],
     'd': [[0x20], [0xA0]], 'D': [[0x2A, 0x20], [0xA0, 0xAA]],
@@ -252,11 +264,11 @@ SCANCODES = {
     '.': [[0x34], [0xB4]], '>': [[0x2A, 0x34], [0xB4, 0xAA]],
     '/': [[0x35], [0xB5]], '?': [[0x2A, 0x35], [0xB5, 0xAA]],
     'Rshift': [[0x36], [0xB6]],
-    'print_screen': [[0x37], [0xB7]],
-    'alt': [[0x38], [0xB8]],
+    'printScreen': [[0x37], [0xB7]],
+    'altgr': [[0x38], [0xB8]],
     'space': [[0x39], [0xB9]],
     ' ': [[0x39], [0xB9]],
-    'caps': [[0x3A], [0xBA]],
+    'capsLock': [[0x3A], [0xBA]],
     'F1': [[0x3B], [0xBB]],
     'F2': [[0x3C], [0xBC]],
     'F3': [[0x3D], [0xBD]],
@@ -269,21 +281,26 @@ SCANCODES = {
     'F10': [[0x44], [0xC4]],
     'F11': [[0x57], [0xD7]],
     'F12': [[0x58], [0xD8]],
-    'NUM': [[0x45], [0xC5]],
-    'SCRL': [[0x46], [0xC6]],
-    'HOME': [[0x47], [0xC7]],
-    'UP': [[0x48], [0xC8]],
-    'PGUP': [[0x49], [0xC9]],
-    'MINUS': [[0x4A], [0xCA]],
-    'LEFT': [[0x4B], [0xCB]],
-    'CENTER': [[0x4C], [0xCC]],
-    'RIGHT': [[0x4D], [0xCD]],
-    'PLUS': [[0x4E], [0xCE]],
-    'END': [[0x4F], [0xCF]],
-    'DOWN': [[0x50], [0xD0]],
-    'PGDN': [[0x51], [0xD1]],
-    'INS': [[0x52], [0xD2]],
-    'DEL': [[0x53], [0xD3]],
+    'numLock': [[0x45], [0xC5]],
+    'scrollLock': [[0x46], [0xC6]],
+    'home': [[0x47], [0xC7]],
+    'up': [[0x48], [0xC8]],
+    'pageUp': [[0x49], [0xC9]],
+    'minus': [[0x4A], [0xCA]],
+    'left': [[0x4B], [0xCB]],
+    'center': [[0x4C], [0xCC]],
+    'right': [[0x4D], [0xCD]],
+    'plus': [[0x4E], [0xCE]],
+    'end': [[0x4F], [0xCF]],
+    'down': [[0x50], [0xD0]],
+    'pageDown': [[0x51], [0xD1]],
+    'insert': [[0x52], [0xD2]],
+    'delete': [[0x53], [0xD3]],
+    'alt': [[0x0C, 0x38], [0xC0, 0xB8]],
+    'Rcontrol': [[0x0C, 0x1D], [0xC0, 0x9D]],
+    'Lwin': [[0x5D, 0x5B], [0xE0, 0xDB]],
+    'Rwin': [[0xE0, 0x5C], [0xE0, 0xDC]],
+
     'E_DIV': [[0xE0, 0x54], [0xE0, 0xD4]],
     'E_ENTER': [[0xE0, 0x1C], [0xE0, 0x9C]],
     'E_INS': [[0xE0, 0x52], [0xE0, 0xD2]],
@@ -296,12 +313,9 @@ SCANCODES = {
     'E_RIGHT': [[0xE0, 0x4D], [0xE0, 0xCD]],
     'E_UP': [[0xE0, 0x48], [0xE0, 0xC8]],
     'E_DOWN': [[0xE0, 0x50], [0xE0, 0xD0]],
-    'Ralt': [[0x0C, 0x38], [0xC0, 0xB8]],
-    'Rctrl': [[0x0C, 0x1D], [0xC0, 0x9D]],
-    'Lwin': [[0xE0, 0x5B], [0xE0, 0xDB]],
-    'Rwin': [[0xE0, 0x5C], [0xE0, 0xDC]],
     # No scan code for pause key released
     'pause': [[0xE1, 0x1D, 0x45, 0xE1, 0x9D, 0xC5], []],
+
 }
 
 mouse_key_dict = {
@@ -349,9 +363,19 @@ def press(key_inputs):
             continue
         else:
             try:
-                key = chr(int(k))
+                key = chr(int(k)).lower()
+                if 160 < int(k):
+                    print("key:", key, "could not be pressed")
+                    continue
             except ValueError:
                 print("key:", k, "could not be pressed")
+                continue
 
-        win32api.keybd_event(VK_CODE[key], SCANCODES[key][0][0], 0, 0)
-        win32api.keybd_event(VK_CODE[key], SCANCODES[key][0][0], win32con.KEYEVENTF_KEYUP, 0)
+        a = VK_CODE[key]
+        b = SCANCODES[key][0][0]
+
+        if key_inputs[k] == 1:
+            win32api.keybd_event(VK_CODE[key], SCANCODES[key][0][0], 0, 0)
+
+        if key_inputs[k] == 0:
+            win32api.keybd_event(VK_CODE[key], SCANCODES[key][0][0], win32con.KEYEVENTF_KEYUP, 0)

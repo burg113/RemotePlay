@@ -20,10 +20,9 @@ key_input = input_object.InputObject()
 
 
 def load_settings():
-    global HOST, PORT
+    global PORT
     with open("../profiles/default.json", "r") as f:
         data = json.load(f)
-        HOST = data["ip"]
         PORT = data["port"]
 
     pass
@@ -48,6 +47,11 @@ def received(data, respond, uuid):
 
 if __name__ == "__main__":
     global server
+
+    load_settings()
+
+    print("running server on port", PORT,"...")
+
     server = networking.Server(PORT, received, host_ip="0.0.0.0")
 
     while True:

@@ -1,6 +1,6 @@
 # Remote Play
 
-Remote Play is a console application written in python that allows you to transfer your keyboard inputs to another pc.
+Remote Play is a console application written in python that allows you to transfer your keyboard and mouse inputs to another pc.
 It allows for all sorts of fun ways to play with your friends online and still share controlls as if you were sitting right next to them.
 
 

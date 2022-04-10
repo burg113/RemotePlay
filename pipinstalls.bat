@@ -8,4 +8,5 @@ pip install multiprocessing
 pip install pygame
 pip install pynput
 pip install pywin32
+pip install pypiwin32
 pip install uuid

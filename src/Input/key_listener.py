@@ -28,11 +28,11 @@ def on_press(key):
             input_listener.toggle_suppress_inputs()
 
         if input_listener.suppress_inputs and not part_of_shortcut:
-            input_listener.input_obj.input(str(key.vk), 1)
+            input_listener.input("Keyboard", str(key.vk), 1)
     else:
         alt_gr_pressed = (key == keyboard.Key.alt_gr)
         if input_listener.suppress_inputs:
-            input_listener.input_obj.input(str(key), 1)
+            input_listener.input("Keyboard", str(key), 1)
 
     print(input_listener.input_obj.key_inputs)
     pass
@@ -46,11 +46,11 @@ def on_release(key):
         if key.vk == 84:
             # 84 = vk code of t
             t_pressed = False
-        input_listener.input_obj.input(str(key.vk), 0)
+        input_listener.input("Keyboard", str(key.vk), 0)
     else:
         if key == keyboard.Key.alt_gr:
             alt_gr_pressed = False
-        input_listener.input_obj.input(str(key), 0)
+        input_listener.input("Keyboard", str(key), 0)
     print(input_listener.input_obj.key_inputs)
     pass
 

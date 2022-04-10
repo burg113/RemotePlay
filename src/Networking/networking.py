@@ -72,15 +72,15 @@ class Server:
     def __init__(self, port, callback=default_callback, chunksize=SOCKET_CHUNK_SIZE, host_ip="0.0.0.0", blocking=True):
         self.callback = callback
         self.CONTROL_BYTE_LENGTH = CONTROL_BYTE_LENGTH
-        self.CHUNK_SIZE = SOCKET_CHUNK_SIZE
+        self.CHUNK_SIZE = chunksize
 
         self.sock = None
         self.connections = []
         self.process = None
 
-        self.host(host_ip, port, chunksize, blocking)
+        self.host(host_ip, port, blocking)
 
-    def host(self, host_ip, port, chunksize=SOCKET_CHUNK_SIZE, blocking=True):
+    def host(self, host_ip, port, blocking=True):
         self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
         self.sock.bind((host_ip, port))
@@ -144,13 +144,13 @@ class Client:
     def __init__(self, host, port, callback=default_callback, chunksize=SOCKET_CHUNK_SIZE, blocking=True):
         self.callback = callback
         self.CONTROL_BYTE_LENGTH = CONTROL_BYTE_LENGTH
-        self.CHUNK_SIZE = SOCKET_CHUNK_SIZE
+        self.CHUNK_SIZE = chunksize
         self.host_ip = host
 
         self.sock = None
         self.process = None
 
-        self.connect(host, port, chunksize)
+        self.connect(host, port,blocking)
 
     def on_connection(self, sock):
         print("Connected")
@@ -159,7 +159,7 @@ class Client:
 
         print(f"Disconnected")
 
-    def connect(self, host, port, chunksize=SOCKET_CHUNK_SIZE, blocking=True):
+    def connect(self, host, port, blocking=True):
         self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.sock.connect((host, port))
 

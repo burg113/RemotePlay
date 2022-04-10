@@ -43,9 +43,8 @@ def do_suppress_inputs(val):
 
 def on_move(x, y):
     if input_listener.suppress_inputs:
-        print(100 * "-", x, y)
-        input_listener.input_obj.input("MouseXDelta", x, is_scalar=True, is_delta=True)
-        input_listener.input_obj.input("MouseYDelta", y, is_scalar=True, is_delta=True)
+        input_listener.input("Mouse", "MouseXDelta", x, is_scalar=True, is_delta=True)
+        input_listener.input("Mouse", "MouseYDelta", y, is_scalar=True, is_delta=True)
 
         win32api.SetCursorPos((0, 0))
         pass
@@ -53,13 +52,13 @@ def on_move(x, y):
 
 def on_click(x, y, button, pressed):
     if input_listener.suppress_inputs:
-        input_listener.input_obj.input(str(button).replace("Button", "M"), pressed)
+        input_listener.input("Mouse", str(button).replace("Button", "M"), pressed)
 
 
 def on_scroll(x, y, dx, dy):
     if input_listener.suppress_inputs:
-        input_listener.input_obj.input("M.scroll_x", dx)
-        input_listener.input_obj.input("M.scroll_y", dy)
+        input_listener.input("Mouse", "M.scroll_x", dx)
+        input_listener.input("Mouse", "M.scroll_y", dy)
 
 
 def run():

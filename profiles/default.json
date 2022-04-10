@@ -1,5 +1,5 @@
 {
-  "ip" : "79.244.152.71",
+  "ip" : "80.137.68.5",
   "port" : 30832,
 
   "controls" : {
@@ -12,16 +12,13 @@
     "key_whitelist" : [
     ],
 
-    "enable_key_conversion" : 0,
-    "key_conversion" : {
-
-    },
-
     "enable_key_blacklist" : 0,
     "key_blacklist" : [
+    ],
 
-    ]
-
+    "enable_key_conversion" : 0,
+    "key_conversion" : {
+    }
   },
 
   "server" : {

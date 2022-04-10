@@ -200,8 +200,8 @@ VK_CODE = {'backspace': 0x08,
            '`': 0xC0,
 
            # no text output
-           'Lwin': 0x07,
-           'Rwin': 0x07,
+           'Lwin': 0x5C,
+           'Rwin': 0x5C,
 
            }
 
@@ -338,7 +338,6 @@ def press(key_inputs):
         if key_dict.__contains__(k):
             key = key_dict[k]
 
-
         elif mouse_key_dict.__contains__(k):
             key = mouse_key_dict[k]
             if key_inputs[k] == 1:
@@ -370,9 +369,6 @@ def press(key_inputs):
             except ValueError:
                 print("key:", k, "could not be pressed")
                 continue
-
-        a = VK_CODE[key]
-        b = SCANCODES[key][0][0]
 
         if key_inputs[k] == 1:
             win32api.keybd_event(VK_CODE[key], SCANCODES[key][0][0], 0, 0)

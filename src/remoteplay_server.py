@@ -1,7 +1,7 @@
 """
     todo:
+        cleanup key_presser + send less data over network (String --> int)  [see win32con]
         support controller
-        make program customisable though jsons
         (make prints toggleable)
         add different modes for handling multiple inputs
 

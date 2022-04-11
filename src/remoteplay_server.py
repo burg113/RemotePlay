@@ -8,6 +8,7 @@
 
 """
 import json
+import pickle
 import time
 
 from Networking import networking
@@ -15,16 +16,19 @@ from Input import input_object
 from Input import key_presser
 from Input import mouse_mover
 
-PORT = 5000
-global key_input
+PORT = None  # loaded from server_config_file
+IP = None  # loaded from server_config_file
+
+
 key_input = input_object.InputObject()
 
 
 def load_settings():
-    global PORT
-    with open("../profiles/default.json", "r") as f:
+    global PORT, IP
+    with open("../profiles/default_server.json", "r") as f:
         data = json.load(f)
         PORT = data["port"]
+        IP = data["host-ip"]
 
     pass
 
@@ -42,13 +46,12 @@ def press_keys(data):
 
 
 def received(data, respond, uuid):
-    print("received:-", data, "-", "from", uuid)
+    print("received:-", len(data), "-", "from", uuid)
     press_keys(data)
 
 
 def connected(send, source):
     print("connected with", source)
-    send("hi")
 
 
 if __name__ == "__main__":
@@ -58,5 +61,4 @@ if __name__ == "__main__":
 
     print("running server on port", PORT, "...")
 
-    server = networking.Server(PORT, received,callback_on_connection=connected, host_ip="0.0.0.0")
-
+    server = networking.Server(PORT, received, callback_on_connection=connected, chunksize=64, host_ip=IP)

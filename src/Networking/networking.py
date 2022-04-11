@@ -39,6 +39,9 @@ def int_from_bytes(b):
 
 
 def send(conn, msg, control_bytes=CONTROL_BYTE_LENGTH):
+    if type(msg) == str:
+        msg = bytes(msg, 'utf-8')
+
     header = int_to_bytes(len(msg), control_bytes)
     conn.sendall(header + msg)
 
@@ -118,7 +121,7 @@ class Server:
         print(f"Connected: {addr}", id)
         connection = self.Connection(conn)
 
-        self.callback_on_connection(id, connection.send)
+        self.callback_on_connection(connection.send, id)
 
         listen(self, conn, id, connection.send)
 

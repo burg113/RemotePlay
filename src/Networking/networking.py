@@ -151,8 +151,11 @@ class Server:
 
 class Client:
 
-    def __init__(self, host, port, callback=default_callback, chunksize=SOCKET_CHUNK_SIZE, blocking=True):
+    def __init__(self, host, port, callback=default_callback, callback_on_connection=default_callback_on_connection,
+                 chunksize=SOCKET_CHUNK_SIZE, blocking=True):
         self.callback = callback
+        self.callback_on_connection = callback_on_connection
+
         self.CONTROL_BYTE_LENGTH = CONTROL_BYTE_LENGTH
         self.CHUNK_SIZE = chunksize
         self.host_ip = host
@@ -164,7 +167,7 @@ class Client:
 
     def on_connection(self, sock):
         print("Connected")
-
+        self.callback_on_connection(send, self.host_ip)
         listen(self, sock, self.host_ip, send)
 
         print(f"Disconnected")

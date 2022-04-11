@@ -67,10 +67,16 @@ def default_callback(data, respond, source):
     print("received:-", data, "-", "from", source, "no callback function configured")
 
 
+def default_callback_on_connection(send, source):
+    print("new connection from", source, ". no callback function configured")
+
+
 class Server:
 
-    def __init__(self, port, callback=default_callback, chunksize=SOCKET_CHUNK_SIZE, host_ip="0.0.0.0", blocking=True):
+    def __init__(self, port, callback=default_callback, callback_on_connection=default_callback_on_connection,
+                 chunksize=SOCKET_CHUNK_SIZE, host_ip="0.0.0.0", blocking=True):
         self.callback = callback
+        self.callback_on_connection = callback_on_connection
         self.CONTROL_BYTE_LENGTH = CONTROL_BYTE_LENGTH
         self.CHUNK_SIZE = chunksize
 
@@ -98,7 +104,6 @@ class Server:
             p = Process(target=self.on_new_client, args=(conn, addr, this_id))
             self.connections.append((conn, addr, this_id))
             p.start()
-            self.broadcast(b"someone joined!")
 
     class Connection:
         conn = None
@@ -112,6 +117,9 @@ class Server:
     def on_new_client(self, conn, addr, id):
         print(f"Connected: {addr}", id)
         connection = self.Connection(conn)
+
+        self.callback_on_connection(id, connection.send)
+
         listen(self, conn, id, connection.send)
 
         for c in range(len(self.connections)):
@@ -125,9 +133,8 @@ class Server:
     def broadcast(self, msg):
         for connection in self.connections:
             conn, addr, uuid = connection
-            print("hi")
             try:
-                send(conn, b"a new client joined")
+                send(conn, msg)
             except ConnectionResetError:
 
                 pass
@@ -150,7 +157,7 @@ class Client:
         self.sock = None
         self.process = None
 
-        self.connect(host, port,blocking)
+        self.connect(host, port, blocking)
 
     def on_connection(self, sock):
         print("Connected")

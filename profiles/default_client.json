@@ -2,6 +2,9 @@
   "ip" : "80.137.68.5",
   "port" : 30832,
 
+  "client_id" : 0,
+  "name" : "default-client",
+
   "controls" : {
     "enable_keyboard" : 1,
     "enable_mouse" : 1,
@@ -19,20 +22,6 @@
     "enable_key_conversion" : 0,
     "key_conversion" : {
     }
-  },
-
-  "server" : {
-    "enable_ip_whitelist" : 0,
-    "ip_whitelist" :  [
-
-    ],
-
-    "enable_ip_whitelist" : 0,
-    "ip_blacklist" : [
-
-    ]
-
-
   }
 
 }

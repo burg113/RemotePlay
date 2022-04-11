@@ -1,0 +1,94 @@
+{
+  "ip" : "0.0.0.0",
+  "port" : 30832,
+
+  "enable_ip_whitelist" : 0,
+  "ip_whitelist" :  [
+
+  ],
+
+  "enable_ip_whitelist" : 0,
+  "ip_blacklist" : [
+
+  ],
+
+  "take_client_control": 0,
+  "client_id" : 0,
+
+  "client_controls" : [
+    {
+      "enable_keyboard" : 1,
+      "enable_mouse" : 1,
+
+      "enable_controller" : "not implemented",
+
+      "enable_key_whitelist" : 0,
+      "key_whitelist" : [
+      ],
+
+      "enable_key_blacklist" : 0,
+      "key_blacklist" : [
+      ],
+
+      "enable_key_conversion" : 0,
+      "key_conversion" : {
+      }
+    },
+    {
+      "enable_keyboard" : 1,
+      "enable_mouse" : 1,
+
+      "enable_controller" : "not implemented",
+
+      "enable_key_whitelist" : 0,
+      "key_whitelist" : [
+      ],
+
+      "enable_key_blacklist" : 0,
+      "key_blacklist" : [
+      ],
+
+      "enable_key_conversion" : 0,
+      "key_conversion" : {
+      }
+    },
+    {
+      "enable_keyboard" : 1,
+      "enable_mouse" : 1,
+
+      "enable_controller" : "not implemented",
+
+      "enable_key_whitelist" : 0,
+      "key_whitelist" : [
+      ],
+
+      "enable_key_blacklist" : 0,
+      "key_blacklist" : [
+      ],
+
+      "enable_key_conversion" : 0,
+      "key_conversion" : {
+      }
+    },
+    {
+      "enable_keyboard" : 1,
+      "enable_mouse" : 1,
+
+      "enable_controller" : "not implemented",
+
+      "enable_key_whitelist" : 0,
+      "key_whitelist" : [
+      ],
+
+      "enable_key_blacklist" : 0,
+      "key_blacklist" : [
+      ],
+
+      "enable_key_conversion" : 0,
+      "key_conversion" : {
+      }
+    }
+  ]
+
+
+}

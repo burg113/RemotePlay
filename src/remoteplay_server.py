@@ -1,6 +1,7 @@
 """
     todo:
         cleanup key_presser + send less data over network (String --> int)  [see win32con]
+        write bat for starting client/server
         support controller
         (make prints toggleable)
         add different modes for handling multiple inputs
@@ -45,6 +46,11 @@ def received(data, respond, uuid):
     press_keys(data)
 
 
+def connected(send, source):
+    print("connected with", source)
+    send("hi")
+
+
 if __name__ == "__main__":
     global server
 
@@ -52,5 +58,5 @@ if __name__ == "__main__":
 
     print("running server on port", PORT, "...")
 
-    server = networking.Server(PORT, received, host_ip="0.0.0.0")
+    server = networking.Server(PORT, received,callback_on_connection=connected, host_ip="0.0.0.0")
 

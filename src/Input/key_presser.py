@@ -331,12 +331,20 @@ mouse_wheel_dict = {
 ahk = AHK()
 
 
-def press(key_inputs):
+def press(key_inputs, controls):
+
     for k in key_inputs:
+
         t1 = time.time()
         key = ""
         if key_dict.__contains__(k):
             key = key_dict[k]
+            if (not controls["enable_key_whitelist"] or key in controls["key_whitelist"]) and \
+                    not (controls["enable_key_blacklist"] and key in controls["key_blacklist"]):
+                if controls["enable_key_conversion"] and key in controls["key_conversion"]:
+                    key = controls["key_conversion"][key]
+            else:
+                continue
 
         elif mouse_key_dict.__contains__(k):
             key = mouse_key_dict[k]
@@ -370,8 +378,12 @@ def press(key_inputs):
                 print("key:", k, "could not be pressed")
                 continue
 
-        if key_inputs[k] == 1:
-            win32api.keybd_event(VK_CODE[key], SCANCODES[key][0][0], 0, 0)
+        if (not controls["enable_key_whitelist"] or key in controls["key_whitelist"]) and \
+                not (controls["enable_key_blacklist"] and key in controls["key_blacklist"]):
+            if controls["enable_key_conversion"] and key in controls["key_conversion"]:
+                k = controls["key_conversion"][k]
+            if key_inputs[k] == 1:
+                win32api.keybd_event(VK_CODE[key], SCANCODES[key][0][0], 0, 0)
 
-        if key_inputs[k] == 0:
-            win32api.keybd_event(VK_CODE[key], SCANCODES[key][0][0], win32con.KEYEVENTF_KEYUP, 0)
+            if key_inputs[k] == 0:
+                win32api.keybd_event(VK_CODE[key], SCANCODES[key][0][0], win32con.KEYEVENTF_KEYUP, 0)

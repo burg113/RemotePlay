@@ -1,0 +1,27 @@
+{
+  "ip" : "80.137.68.5",
+  "port" : 30832,
+
+  "client_id" : 0,
+  "name" : "default-client",
+
+  "controls" : {
+    "enable_keyboard" : 1,
+    "enable_mouse" : 1,
+
+    "enable_controller" : "not implemented",
+
+    "enable_key_whitelist" : 0,
+    "key_whitelist" : [
+    ],
+
+    "enable_key_blacklist" : 0,
+    "key_blacklist" : [
+    ],
+
+    "enable_key_conversion" : 0,
+    "key_conversion" : {
+    }
+  }
+
+}

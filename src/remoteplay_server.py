@@ -1,5 +1,9 @@
 """
     todo:
+        rework client and server
+
+
+    todo:
         cleanup key_presser + send less data over network (String --> int)  [see win32con]
         write bat for starting client/server
         support controller
@@ -19,8 +23,9 @@ from Input import mouse_mover
 PORT = None  # loaded from server_config_file
 IP = None  # loaded from server_config_file
 
-
 key_input = input_object.InputObject()
+
+client_ids = {}
 
 
 def load_settings():
@@ -33,25 +38,29 @@ def load_settings():
     pass
 
 
-def press_keys(data):
+def press_keys(data, controls):
     global key_input
     key_input.deserialize_delta(data)
 
     delta = input_object.InputObject()
     delta.deserialize_delta(data)
     print(delta.key_inputs)
-    key_presser.press(delta.key_inputs)
+
+    key_presser.press(delta.key_inputs, controls)
 
     mouse_mover.move(delta.scalar_inputs)
 
 
 def received(data, respond, uuid):
-    print("received:-", len(data), "-", "from", uuid)
-    press_keys(data)
+    global client_ids
+    if data.__contains__(b"client_id"):
+        client_ids[uuid] = int(str(data.decode("utf-8")).replace("client_id ", ""))
+    else:
+        with open("../profiles/default_server.json", "r") as f:
+            file_data = json.load(f)
 
-
-def connected(send, source):
-    print("connected with", source)
+            print("received:-", data, "-", "from", uuid)
+            press_keys(data, file_data["client_controls"][client_ids[uuid]])
 
 
 if __name__ == "__main__":
@@ -61,4 +70,4 @@ if __name__ == "__main__":
 
     print("running server on port", PORT, "...")
 
-    server = networking.Server(PORT, received, callback_on_connection=connected, chunksize=64, host_ip=IP)
+    server = networking.Server(PORT, received, chunksize=64, host_ip=IP)

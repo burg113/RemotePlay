@@ -21,6 +21,8 @@ class InputObject:
         self.key_inputs = {}
         self.scalar_inputs = {}
 
+        self.accept_repeated_clicks = accept_repeated_clicks
+
         self.control_config = None
 
         if serialized is not None:

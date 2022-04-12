@@ -36,8 +36,8 @@ def on_click(x, y, button, pressed):
 
 def on_scroll(x, y, dx, dy):
     if input_listener.suppress_inputs:
-        input_listener.input("Mouse", "scroll_x", dx, repeat_clicks=True)
-        input_listener.input("Mouse", "scroll_y", dy, repeat_clicks=True)
+        input_listener.input("Mouse", "scroll_x", dx, repeat_inputs=True)
+        input_listener.input("Mouse", "scroll_y", dy, repeat_inputs=True)
 
 
 def run():

@@ -331,59 +331,43 @@ mouse_wheel_dict = {
 ahk = AHK()
 
 
-def press(key_inputs, controls):
+def press(key_in, val):
+    if mouse_key_dict.__contains__(key_in):
+        key = mouse_key_dict[key_in]
+        if val == 1:
+            ahk.key_down(key, False)
 
-    for k in key_inputs:
+        if val == 0:
+            ahk.key_up(key, False)
 
-        t1 = time.time()
-        key = ""
-        if key_dict.__contains__(k):
-            key = key_dict[k]
-            if (not controls["enable_key_whitelist"] or key in controls["key_whitelist"]) and \
-                    not (controls["enable_key_blacklist"] and key in controls["key_blacklist"]):
-                if controls["enable_key_conversion"] and key in controls["key_conversion"]:
-                    key = controls["key_conversion"][key]
-            else:
-                continue
+        return
 
-        elif mouse_key_dict.__contains__(k):
-            key = mouse_key_dict[k]
-            if key_inputs[k] == 1:
-                ahk.key_down(key, False)
+    if mouse_wheel_dict.__contains__(key_in):
+        for i in range(abs(val)):
+            val_sign = val / abs(val)
+            if val_sign == -1:
+                key = mouse_wheel_dict[key_in][0]
+            if val_sign == 1:
+                key = mouse_wheel_dict[key_in][1]
+            # print("pressing:" + str(key))
+            ahk.key_press(key, False)
+        return
 
-            if key_inputs[k] == 0:
-                ahk.key_up(key, False)
+    if key_dict.__contains__(key_in):
+        key = key_dict[key_in]
 
-            continue
+    else:
+        try:
+            key = chr(int(key_in)).lower()
+            if 160 < int(key_in):
+                print("key:", key, "could not be pressed")
+                return
+        except ValueError:
+            print("key:", key_in, "could not be pressed")
+            return
 
-        elif mouse_wheel_dict.__contains__(k):
+    if val == 1:
+        win32api.keybd_event(VK_CODE[key], SCANCODES[key][0][0], 0, 0)
 
-            for i in range(abs(key_inputs[k])):
-                key_inputs[k] /= abs(key_inputs[k])
-                if key_inputs[k] == -1:
-                    key = mouse_wheel_dict[k][0]
-                if key_inputs[k] == 1:
-                    key = mouse_wheel_dict[k][1]
-                # print("pressing:" + str(key))
-                ahk.key_press(key, False)
-
-            continue
-        else:
-            try:
-                key = chr(int(k)).lower()
-                if 160 < int(k):
-                    print("key:", key, "could not be pressed")
-                    continue
-            except ValueError:
-                print("key:", k, "could not be pressed")
-                continue
-
-        if (not controls["enable_key_whitelist"] or key in controls["key_whitelist"]) and \
-                not (controls["enable_key_blacklist"] and key in controls["key_blacklist"]):
-            if controls["enable_key_conversion"] and key in controls["key_conversion"]:
-                k = controls["key_conversion"][k]
-            if key_inputs[k] == 1:
-                win32api.keybd_event(VK_CODE[key], SCANCODES[key][0][0], 0, 0)
-
-            if key_inputs[k] == 0:
-                win32api.keybd_event(VK_CODE[key], SCANCODES[key][0][0], win32con.KEYEVENTF_KEYUP, 0)
+    if val == 0:
+        win32api.keybd_event(VK_CODE[key], SCANCODES[key][0][0], win32con.KEYEVENTF_KEYUP, 0)

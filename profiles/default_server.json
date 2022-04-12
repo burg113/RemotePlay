@@ -23,7 +23,7 @@
 
       "enable_controller" : "not implemented",
 
-      "enable_key_whitelist" : 1,
+      "enable_key_whitelist" : 0,
       "key_whitelist" : [
         "w",
         "a",
@@ -34,6 +34,8 @@
 
       "enable_key_blacklist" : 0,
       "key_blacklist" : [
+        "a",
+        "d"
       ],
 
       "enable_key_conversion" : 0,

@@ -1,7 +1,9 @@
 """
     todo:
         rework client and server
-
+        pressing mouse buttons over win32api
+        write docs:     Client                  Server
+                whitelist conversion--->conversion whitelist
 
     todo:
         cleanup key_presser + send less data over network (String --> int)  [see win32con]
@@ -46,9 +48,9 @@ def press_keys(data, controls):
     delta.deserialize_delta(data)
     print(delta.key_inputs)
 
-    key_presser.press(delta.key_inputs, controls)
+    key_input.control_config = controls
 
-    mouse_mover.move(delta.scalar_inputs)
+    key_input.execute_deltas()
 
 
 def received(data, respond, uuid):
@@ -61,6 +63,7 @@ def received(data, respond, uuid):
 
             print("received:-", data, "-", "from", uuid)
             press_keys(data, file_data["client_controls"][client_ids[uuid]])
+
 
 
 if __name__ == "__main__":

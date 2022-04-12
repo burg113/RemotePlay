@@ -14,27 +14,6 @@ mouse_controller = Controller()
 
 listener = None
 
-"""def update():
-    if input_listener.suppress_inputs and False:
-
-        # somehow hide cursor?!
-
-        # print("\t\t\t", input_listener.input_obj.scalar_inputs_delta)
-
-        new_mouse_position = mouse_controller.position
-        mouse_delta = (new_mouse_position[0] - midWidth, new_mouse_position[1] - midHeight)
-
-        # print(mouse_delta)
-        input_listener.input_obj.input("MouseXDelta", mouse_delta[0], is_scalar=True, is_delta=True)
-        input_listener.input_obj.input("MouseYDelta", mouse_delta[1], is_scalar=True, is_delta=True)
-
-        win32api.SetCursorPos((midWidth, midHeight))
-
-    else:
-        # somehow show cursor
-        pass
-"""
-
 
 def do_suppress_inputs(val):
     win32api.SetCursorPos((midWidth, midHeight))

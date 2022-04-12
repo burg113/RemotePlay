@@ -9,7 +9,15 @@ It allows for all sorts of fun ways to play with your friends online and still s
 First **download the code** from this repository [green "Code" button -> "Download ZIP"] and unzip it.
 
 Then **install python** (and pip) [from https://www.python.org/downloads/ ] if you do not have already and add it to the path variable.
-If everything is working correctly you should be able to execute the pythoncheck.bat file without any errors (you should be given the version of both your python and pip version).
+If everything is working correctly you should be able to execute the pythoncheck.bat file and you should see a log like 
+
+---
+
+python is installed
+
+pip is installed
+
+---
 
 Now **execute the pipinstalls.bat file** in order to get all the required python library's.
 

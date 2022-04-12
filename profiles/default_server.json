@@ -23,7 +23,10 @@
 
       "enable_controller" : "not implemented",
 
-      "enable_key_whitelist" : 1,
+      "enable_mouse_x": 1,
+      "enable_mouse_y": 1,
+
+      "enable_key_whitelist" : 0,
       "key_whitelist" : [
         "w",
         "a",

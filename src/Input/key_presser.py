@@ -4,69 +4,23 @@ import win32api
 import win32con
 from ahk import AHK
 
-key_dict = {
-    "Key.ctrl_l": "Lcontrol",
-    "Key.space": "space",
-    "Key.shift": "Lshift",
-    "Key.caps_lock": "capsLock",
-    "Key.cmd": "Lwin",
-    "Key.alt_l": "alt",
-    "Key.tab": "tab",
-    "Key.alt_gr": "altgr",
-    "Key.ctrl_r": "Rcontrol",
-    "Key.menu": "home",
-    "Key.backspace": "backspace",
-    "Key.enter": "enter",
-    "Key.esc": "escape",
-
-    "Key.shift_r": "Rshift",
-    "Key.delete": "delete",
-    "Key.insert": "insert",
-    "Key.scroll_lock": "scrollLock",
-    "Key.pause": "pause",
-    "Key.print_screen": "printScreen",
-
-    "Key.left": "left",
-    "Key.right": "right",
-    "Key.up": "up",
-    "Key.down": "down",
-
-    "Key.f1": "F1",
-    "Key.f2": "F2",
-    "Key.f3": "F3",
-    "Key.f4": "F4",
-    "Key.f5": "F5",
-    "Key.f6": "F6",
-    "Key.f7": "F7",
-    "Key.f8": "F8",
-    "Key.f9": "F9",
-    "Key.f10": "F10",
-    "Key.f11": "F11",
-    "Key.f12": "F12",
-
-    "Key.page_up": "a",
-    "Key.page_down": "b",
-    "Key.end": "end",
-    "Key.home": "home",
-
-}
-
 VK_CODE = {'backspace': 0x08,
            'tab': 0x09,
            'clear': 0x0C,
            'enter': 0x0D,
            'shift': 0x10,
            'ctrl': 0x11,
-           'alt': 0x12,
-           'altgr': 0x12,
+           'alt_l': 0x12,
+           'alt_gr': 0x12,
            'pause': 0x13,
-           'capsLock': 0x14,
-           'escape': 0x1B,
+           'caps_lock': 0x14,
+           'esc': 0x1B,
            'space': 0x20,
-           'pageUp': 0x21,
-           'pageDown': 0x22,
+           'page_up': 0x21,
+           'page_down': 0x22,
            'end': 0x23,
            'home': 0x24,
+           'menu': 0x24,
            'left': 0x25,
            'up': 0x26,
            'right': 0x27,
@@ -74,7 +28,7 @@ VK_CODE = {'backspace': 0x08,
            'select': 0x29,
            'print': 0x2A,
            'execute': 0x2B,
-           'printScreen': 0x2C,
+           'print_screen': 0x2C,
            'insert': 0x2D,
            'delete': 0x2E,
            'help': 0x2F,
@@ -130,36 +84,36 @@ VK_CODE = {'backspace': 0x08,
            'subtract_key': 0x6D,
            'decimal_key': 0x6E,
            'divide_key': 0x6F,
-           'F1': 0x70,
-           'F2': 0x71,
-           'F3': 0x72,
-           'F4': 0x73,
-           'F5': 0x74,
-           'F6': 0x75,
-           'F7': 0x76,
-           'F8': 0x77,
-           'F9': 0x78,
-           'F10': 0x79,
-           'F11': 0x7A,
-           'F12': 0x7B,
-           'F13': 0x7C,
-           'F14': 0x7D,
-           'F15': 0x7E,
-           'F16': 0x7F,
-           'F17': 0x80,
-           'F18': 0x81,
-           'F19': 0x82,
-           'F20': 0x83,
-           'F21': 0x84,
-           'F22': 0x85,
-           'F23': 0x86,
-           'F24': 0x87,
+           'f1': 0x70,
+           'f2': 0x71,
+           'f3': 0x72,
+           'f4': 0x73,
+           'f5': 0x74,
+           'f6': 0x75,
+           'f7': 0x76,
+           'f8': 0x77,
+           'f9': 0x78,
+           'f10': 0x79,
+           'f11': 0x7A,
+           'f12': 0x7B,
+           'f13': 0x7C,
+           'f14': 0x7D,
+           'f15': 0x7E,
+           'f16': 0x7F,
+           'f17': 0x80,
+           'f18': 0x81,
+           'f19': 0x82,
+           'f20': 0x83,
+           'f21': 0x84,
+           'f22': 0x85,
+           'f23': 0x86,
+           'f24': 0x87,
            'numLock': 0x90,
-           'scrollLock': 0x91,
-           'Lshift': 0xA0,
-           'Rshift': 0xA1,
-           'Lcontrol': 0xA2,
-           'Rcontrol': 0xA3,
+           'scroll_lock': 0x91,
+           'shift': 0xA0,
+           'shift_r': 0xA1,
+           'ctrl_l': 0xA2,
+           'ctrl_r': 0xA3,
            'left_menu': 0xA4,
            'right_menu': 0xA5,
            'browser_back': 0xA6,
@@ -198,15 +152,12 @@ VK_CODE = {'backspace': 0x08,
            ']': 0xDD,
            "'": 0xDE,
            '`': 0xC0,
-
-           # no text output
-           'Lwin': 0x5C,
-           'Rwin': 0x5C,
+           'cmd': 0x5C,
 
            }
 
 SCANCODES = {
-    'escape': [[0x01], [0x81]],
+    'esc': [[0x01], [0x81]],
     '1': [[0x02], [0x82]], '!': [[0x2A, 0x02], [0x82, 0xAA]],
     '2': [[0x03], [0x83]], '@': [[0x2A, 0x03], [0x83, 0xAA]],
     '3': [[0x04], [0x84]], '#': [[0x2A, 0x04], [0x83, 0xAA]],
@@ -238,7 +189,7 @@ SCANCODES = {
     'enter': [[0x1C], [0x9C]],
     '\r': [[0x1C], [0x9C]],
     '\n': [[0x1C], [0x9C]],
-    'Lcontrol': [[0x1D], [0x9D]],
+    'ctrl_l': [[0x1D], [0x9D]],
     'a': [[0x1E], [0x9E]], 'A': [[0x2A, 0x1E], [0x9E, 0xAA]],
     's': [[0x1F], [0x9F]], 'S': [[0x2A, 0x1F], [0x9F, 0xAA]],
     'd': [[0x20], [0xA0]], 'D': [[0x2A, 0x20], [0xA0, 0xAA]],
@@ -251,7 +202,7 @@ SCANCODES = {
     ';': [[0x27], [0xA7]], ':': [[0x2A, 0x27], [0xA7, 0xAA]],
     '\'': [[0x28], [0xA8]], '\"': [[0x2A, 0x28], [0xA8, 0xAA]],
     '`': [[0x29], [0xA9]], '~': [[0x2A, 0x29], [0xA9, 0xAA]],
-    'Lshift': [[0x2A], [0xAA]],
+    'shift': [[0x2A], [0xAA]],
     '\\': [[0x2B], [0xAB]], '|': [[0x2A, 0x2B], [0xAB, 0xAA]],
     'z': [[0x2C], [0xAC]], 'Z': [[0x2A, 0x2C], [0xAC, 0xAA]],
     'x': [[0x2D], [0xAD]], 'X': [[0x2A, 0x2D], [0xAD, 0xAA]],
@@ -263,29 +214,30 @@ SCANCODES = {
     ',': [[0x33], [0xB3]], '<': [[0x2A, 0x33], [0xB3, 0xAA]],
     '.': [[0x34], [0xB4]], '>': [[0x2A, 0x34], [0xB4, 0xAA]],
     '/': [[0x35], [0xB5]], '?': [[0x2A, 0x35], [0xB5, 0xAA]],
-    'Rshift': [[0x36], [0xB6]],
-    'printScreen': [[0x37], [0xB7]],
-    'altgr': [[0x38], [0xB8]],
+    'shift_r': [[0x36], [0xB6]],
+    'print_screen': [[0x37], [0xB7]],
+    'alt_gr': [[0x38], [0xB8]],
     'space': [[0x39], [0xB9]],
     ' ': [[0x39], [0xB9]],
-    'capsLock': [[0x3A], [0xBA]],
-    'F1': [[0x3B], [0xBB]],
-    'F2': [[0x3C], [0xBC]],
-    'F3': [[0x3D], [0xBD]],
-    'F4': [[0x3E], [0xBE]],
-    'F5': [[0x3F], [0xBF]],
-    'F6': [[0x40], [0xC0]],
-    'F7': [[0x41], [0xC1]],
-    'F8': [[0x42], [0xC2]],
-    'F9': [[0x43], [0xC3]],
-    'F10': [[0x44], [0xC4]],
-    'F11': [[0x57], [0xD7]],
-    'F12': [[0x58], [0xD8]],
+    'caps_lock': [[0x3A], [0xBA]],
+    'f1': [[0x3B], [0xBB]],
+    'f2': [[0x3C], [0xBC]],
+    'f3': [[0x3D], [0xBD]],
+    'f4': [[0x3E], [0xBE]],
+    'f5': [[0x3F], [0xBF]],
+    'f6': [[0x40], [0xC0]],
+    'f7': [[0x41], [0xC1]],
+    'f8': [[0x42], [0xC2]],
+    'f9': [[0x43], [0xC3]],
+    'f10': [[0x44], [0xC4]],
+    'f11': [[0x57], [0xD7]],
+    'f12': [[0x58], [0xD8]],
     'numLock': [[0x45], [0xC5]],
-    'scrollLock': [[0x46], [0xC6]],
+    'scroll_lock': [[0x46], [0xC6]],
     'home': [[0x47], [0xC7]],
+    'menu': [[0x47], [0xC7]],
     'up': [[0x48], [0xC8]],
-    'pageUp': [[0x49], [0xC9]],
+    'page_up': [[0x49], [0xC9]],
     'minus': [[0x4A], [0xCA]],
     'left': [[0x4B], [0xCB]],
     'center': [[0x4C], [0xCC]],
@@ -293,13 +245,12 @@ SCANCODES = {
     'plus': [[0x4E], [0xCE]],
     'end': [[0x4F], [0xCF]],
     'down': [[0x50], [0xD0]],
-    'pageDown': [[0x51], [0xD1]],
+    'page_down': [[0x51], [0xD1]],
     'insert': [[0x52], [0xD2]],
     'delete': [[0x53], [0xD3]],
-    'alt': [[0x0C, 0x38], [0xC0, 0xB8]],
-    'Rcontrol': [[0x0C, 0x1D], [0xC0, 0x9D]],
-    'Lwin': [[0x5D, 0x5B], [0xE0, 0xDB]],
-    'Rwin': [[0xE0, 0x5C], [0xE0, 0xDC]],
+    'alt_l': [[0x0C, 0x38], [0xC0, 0xB8]],
+    'ctrl_r': [[0x0C, 0x1D], [0xC0, 0x9D]],
+    'cmd': [[0x5D, 0x5B], [0xE0, 0xDB]],
 
     'E_DIV': [[0xE0, 0x54], [0xE0, 0xD4]],
     'E_ENTER': [[0xE0, 0x1C], [0xE0, 0x9C]],
@@ -319,56 +270,48 @@ SCANCODES = {
 }
 
 mouse_key_dict = {
-    "M.left": "LButton",
-    "M.right": "RButton",
-    "M.middle": "MButton",
+    "left": "LButton",
+    "right": "RButton",
+    "middle": "MButton",
 }
 mouse_wheel_dict = {
-    "M.scroll_y": ("WheelDown", "WheelUp"),
-    "M.scroll_x": ("WheelLeft", "WheelRight")
+    "scroll_y": ("WheelDown", "WheelUp"),
+    "scroll_x": ("WheelLeft", "WheelRight")
 }
 
 ahk = AHK()
 
 
-def press(key_in, val):
-    print("pressing",key_in,val)
-    if mouse_key_dict.__contains__(key_in):
-        key = mouse_key_dict[key_in]
-        if val == 1:
-            ahk.key_down(key, False)
+def press(key_in, val, mouse):
+    print("pressing", key_in, val)
+    if mouse:
+        if mouse_key_dict.__contains__(key_in):
+            key = mouse_key_dict[key_in]
+            if val == 1:
+                ahk.key_down(key, False)
 
-        if val == 0:
-            ahk.key_up(key, False)
+            if val == 0:
+                ahk.key_up(key, False)
 
-        return
+            return
 
-    if mouse_wheel_dict.__contains__(key_in):
-        for i in range(abs(val)):
-            val_sign = val / abs(val)
-            if val_sign == -1:
-                key = mouse_wheel_dict[key_in][0]
-            if val_sign == 1:
-                key = mouse_wheel_dict[key_in][1]
-            # print("pressing:" + str(key))
-            ahk.key_press(key, False)
-        return
-
-    if key_dict.__contains__(key_in):
-        key = key_dict[key_in]
+        if mouse_wheel_dict.__contains__(key_in):
+            for i in range(abs(val)):
+                val_sign = val / abs(val)
+                if val_sign == -1:
+                    key = mouse_wheel_dict[key_in][0]
+                if val_sign == 1:
+                    key = mouse_wheel_dict[key_in][1]
+                # print("pressing:" + str(key))
+                ahk.key_press(key, False)
+            return
 
     else:
         try:
-            key = chr(int(key_in)).lower()
-            if 160 < int(key_in):
-                print("key:", key, "could not be pressed")
-                return
-        except ValueError:
-            print("key:", key_in, "could not be pressed")
-            return
+            if val == 1:
+                win32api.keybd_event(VK_CODE[key_in], SCANCODES[key_in][0][0], 0, 0)
 
-    if val == 1:
-        win32api.keybd_event(VK_CODE[key], SCANCODES[key][0][0], 0, 0)
-
-    if val == 0:
-        win32api.keybd_event(VK_CODE[key], SCANCODES[key][0][0], win32con.KEYEVENTF_KEYUP, 0)
+            if val == 0:
+                win32api.keybd_event(VK_CODE[key_in], SCANCODES[key_in][0][0], win32con.KEYEVENTF_KEYUP, 0)
+        except KeyError:
+            print("key -", key_in, "- cannot be pressed")

@@ -101,30 +101,45 @@ class InputObject:
             self.key_inputs_delta = {}
             self.scalar_inputs_delta = {}
 
+    def apply_controls(self, key):
+        val = self.key_inputs_delta[key]
+        do_execute = True
+        if self.control_config is not None:
+            if self.control_config["enable_key_conversion"] and key in self.control_config["key_conversion"]:
+                key = self.control_config["key_conversion"][key]
+
+            do_execute = (not self.control_config["enable_key_whitelist"] or
+                          key in self.control_config["key_whitelist"]) and not \
+                             (self.control_config["enable_key_blacklist"] and
+                              key in self.control_config["key_blacklist"])
+        if do_execute:
+            return key
+        return None
+
     def execute_scalar_deltas(self):
-        mouse_x_delta = 0
-        mouse_y_delta = 0
+        if self.control_config["enable_mouse"]:
+            mouse_x_delta = 0
+            mouse_y_delta = 0
+            if self.scalar_inputs.__contains__("M.x") and self.control_config["enable_mouse_x"]:
+                mouse_x_delta += self.scalar_inputs["M.x"]
+            if self.scalar_inputs.__contains__("M.y") and self.control_config["enable_mouse_y"]:
+                mouse_y_delta += self.scalar_inputs["M.y"]
 
-        if self.scalar_inputs.__contains__("MouseXDelta"):
-            mouse_x_delta += self.scalar_inputs["MouseXDelta"]
-        if self.scalar_inputs.__contains__("MouseYDelta"):
-            mouse_y_delta += self.scalar_inputs["MouseYDelta"]
-
-        mouse_mover.move(mouse_x_delta, mouse_y_delta)
+            if mouse_x_delta != 0 or mouse_y_delta != 0:
+                mouse_mover.move(mouse_x_delta, mouse_y_delta)
 
     def execute_key_deltas(self):
         for key in self.key_inputs_delta:
             val = self.key_inputs_delta[key]
-            do_execute = True
-            if self.control_config is not None:
-                print(10 * "#", key)
-                if self.control_config["enable_key_conversion"] and key in self.control_config["key_conversion"]:
-                    key = self.control_config["key_conversion"][key]
+            key = self.apply_controls(key)
 
-                do_execute = (not self.control_config["enable_key_whitelist"] or
-                              key in self.control_config["key_whitelist"]) and not \
-                                 (self.control_config["enable_key_blacklist"] and
-                                  key in self.control_config["key_blacklist"])
+            if key is not None:
+                from_mouse = False
+                if key[:2] == "M.":
+                    key = key[2:]
+                    from_mouse = True
 
-            if do_execute:
-                key_presser.press(key, val)
+                if from_mouse and self.control_config["enable_mouse"] or \
+                    not from_mouse and self.control_config["enable_keyboard"]:
+
+                    key_presser.press(key, val, from_mouse)

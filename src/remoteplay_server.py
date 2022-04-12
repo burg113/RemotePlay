@@ -1,6 +1,5 @@
 """
     todo:
-        rework client and server
         pressing mouse buttons over win32api
         write docs:     Client                  Server
                 whitelist conversion--->conversion whitelist
@@ -32,7 +31,7 @@ client_ids = {}
 
 def load_settings():
     global PORT, IP
-    with open("../profiles/default_server.json", "r") as f:
+    with open("../profiles/server_config.json", "r") as f:
         data = json.load(f)
         PORT = data["port"]
         IP = data["host-ip"]
@@ -58,13 +57,12 @@ def received(data, respond, uuid):
     if data.__contains__(b"client_id"):
         client_ids[uuid] = int(str(data.decode("utf-8")).replace("client_id ", ""))
     else:
-        with open("../profiles/default_server.json", "r") as f:
+        with open("../profiles/server_config.json", "r") as f:
             file_data = json.load(f)
 
             print("received:-", data, "-", "from", uuid)
             print(file_data["client_controls"][client_ids[uuid]])
             press_keys(data, file_data["client_controls"][client_ids[uuid]])
-
 
 
 if __name__ == "__main__":

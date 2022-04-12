@@ -1,5 +1,5 @@
 {
-  "ip" : "80.137.68.5",
+  "ip" : "80.137.71.150",
   "port" : 30832,
 
   "client_id" : 0,
@@ -10,6 +10,9 @@
     "enable_mouse" : 1,
 
     "enable_controller" : "not implemented",
+
+    "enable_mouse_x": 1,
+    "enable_mouse_y": 1,
 
     "enable_key_whitelist" : 0,
     "key_whitelist" : [

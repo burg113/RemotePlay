@@ -23,6 +23,73 @@
 
       "enable_controller" : "not implemented",
 
+      "enable_mouse_x": 1,
+      "enable_mouse_y": 1,
+
+      "enable_key_whitelist" : 0,
+      "key_whitelist" : [
+        "w",
+        "a",
+        "s",
+        "d",
+        "space"
+      ],
+
+      "enable_key_blacklist" : 0,
+      "key_blacklist" : [
+        "a",
+        "d"
+      ],
+
+      "enable_key_conversion" : 0,
+      "key_conversion" : {
+      }
+    },
+
+    {
+      "enable_keyboard" : 1,
+      "enable_mouse" : 1,
+
+      "enable_controller" : "not implemented",
+
+      "enable_key_whitelist" : 0,
+      "key_whitelist" : [
+      ],
+
+      "enable_key_blacklist" : 0,
+      "key_blacklist" : [
+      ],
+
+      "enable_key_conversion" : 0,
+      "key_conversion" : {
+      }
+    },
+
+    {
+      "enable_keyboard" : 1,
+      "enable_mouse" : 1,
+
+      "enable_controller" : "not implemented",
+
+      "enable_key_whitelist" : 0,
+      "key_whitelist" : [
+      ],
+
+      "enable_key_blacklist" : 0,
+      "key_blacklist" : [
+      ],
+
+      "enable_key_conversion" : 0,
+      "key_conversion" : {
+      }
+    },
+
+    {
+      "enable_keyboard" : 1,
+      "enable_mouse" : 1,
+
+      "enable_controller" : "not implemented",
+
       "enable_key_whitelist" : 0,
       "key_whitelist" : [
       ],

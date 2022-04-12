@@ -58,40 +58,37 @@ class InputObject:
             self.scalar_inputs[key] = self.scalar_inputs_delta[key]
 
     def input(self, key, value, is_scalar=False, is_delta=False):
-        accept_input = True
-        if self.control_config is not None:
-
-            accept_input = (not self.control_config["enable_key_whitelist"] or key in self.control_config[
-                "key_whitelist"]) and \
-                           not (self.control_config["enable_key_blacklist"] and key in self.control_config[
-                               "key_blacklist"])
-
-            if self.control_config["enable_key_conversion"] and key in self.control_config["key_conversion"]:
-                key = self.control_config["key_conversion"][key]
-
-        if accept_input:
-
+        if key[:2] == "M." and self.control_config["enable_mouse"] \
+                or key[:2] != "M." and self.control_config["enable_keyboard"]:
             if is_scalar:
                 if is_delta:
-                    if not self.scalar_inputs.__contains__(key):
-                        self.scalar_inputs[key] = value
-                    else:
-                        self.scalar_inputs[key] += value
+                    if not ((key == "M.x" and not self.control_config["enable_mouse_x"])
+                            or (key == "M.y" and not self.control_config["enable_mouse_y"])):
 
-                    if value != 0:
-                        if not self.scalar_inputs_delta.__contains__(key):
-                            self.scalar_inputs_delta[key] = value
+                        if not self.scalar_inputs.__contains__(key):
+                            self.scalar_inputs[key] = value
                         else:
-                            self.scalar_inputs_delta[key] += value
+                            self.scalar_inputs[key] += value
+
+                        if value != 0:
+                            if not self.scalar_inputs_delta.__contains__(key):
+                                self.scalar_inputs_delta[key] = value
+                            else:
+                                self.scalar_inputs_delta[key] += value
 
                 else:
                     if not (self.scalar_inputs.__contains__(key) and self.scalar_inputs[key] == value):
                         self.scalar_inputs[key] = value
                         self.scalar_inputs_delta[key] = value
             else:
-                if accept_repeated_clicks or not (self.key_inputs.__contains__(key) and self.key_inputs[key] == value):
-                    self.key_inputs[key] = value
-                    self.key_inputs_delta[key] = value
+
+                key = self.apply_controls(key, do_conversion_first=False)
+
+                if key is not None:
+                    if accept_repeated_clicks or not (
+                            self.key_inputs.__contains__(key) and self.key_inputs[key] == value):
+                        self.key_inputs[key] = value
+                        self.key_inputs_delta[key] = value
 
     def execute_deltas(self, clear_deltas=True):
         self.execute_scalar_deltas()
@@ -101,17 +98,22 @@ class InputObject:
             self.key_inputs_delta = {}
             self.scalar_inputs_delta = {}
 
-    def apply_controls(self, key):
-        val = self.key_inputs_delta[key]
+    def apply_controls(self, key, do_conversion_first=True):
         do_execute = True
         if self.control_config is not None:
-            if self.control_config["enable_key_conversion"] and key in self.control_config["key_conversion"]:
-                key = self.control_config["key_conversion"][key]
+            if do_conversion_first:
+                if self.control_config["enable_key_conversion"] and key in self.control_config["key_conversion"]:
+                    key = self.control_config["key_conversion"][key]
 
             do_execute = (not self.control_config["enable_key_whitelist"] or
                           key in self.control_config["key_whitelist"]) and not \
                              (self.control_config["enable_key_blacklist"] and
                               key in self.control_config["key_blacklist"])
+
+            if not do_conversion_first:
+                if self.control_config["enable_key_conversion"] and key in self.control_config["key_conversion"]:
+                    key = self.control_config["key_conversion"][key]
+
         if do_execute:
             return key
         return None
@@ -140,6 +142,5 @@ class InputObject:
                     from_mouse = True
 
                 if from_mouse and self.control_config["enable_mouse"] or \
-                    not from_mouse and self.control_config["enable_keyboard"]:
-
+                        not from_mouse and self.control_config["enable_keyboard"]:
                     key_presser.press(key, val, from_mouse)

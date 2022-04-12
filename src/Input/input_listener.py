@@ -6,27 +6,14 @@ input_obj = input_object.InputObject()
 
 suppress_inputs = True
 
-enable_keyboard = True
-enable_mouse = True
-
-enable_key_whitelist = False
-key_whitelist = []
-enable_key_blacklist = False
-key_blacklist = []
-
-enable_key_conversion = False
-key_conversion_dict = {}
+control_config = None
 
 
 def input(flag, key, value, is_scalar=False, is_delta=False):
-    if flag == "Keyboard" and enable_keyboard:
-        if (not enable_key_whitelist or key in key_whitelist) and \
-                not (enable_key_blacklist and key in key_blacklist):
-            if enable_key_conversion and key in key_conversion_dict:
-                key = key_conversion_dict[key]
-
-            input_obj.input(key, value, is_scalar, is_delta)
-    if flag == "Mouse" and enable_mouse:
+    input_obj.control_config = control_config
+    if flag == "Keyboard":
+        input_obj.input(key, value, is_scalar, is_delta)
+    if flag == "Mouse":
         input_obj.input("M." + str(key), value, is_scalar, is_delta)
 
 

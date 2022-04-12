@@ -24,21 +24,12 @@ midHeight = int((height + 1) / 2)
 
 
 def load_controls(controls_data):
-    if controls_data["enable_key_whitelist"]:
-        input_listener.enable_key_whitelist = True
-        input_listener.key_whitelist = controls_data["key_whitelist"]
-    if controls_data["enable_key_blacklist"]:
-        input_listener.enable_key_blacklist = True
-        input_listener.key_blacklist = controls_data["key_blacklist"]
-
-    if controls_data["enable_key_conversion"]:
-        input_listener.enable_key_conversion = True
-        input_listener.key_conversion_dict = controls_data["key_conversion"]
+        input_listener.control_config = controls_data
 
 
 def load_settings():
     global HOST, PORT
-    with open("../profiles/default_client.json", "r") as f:
+    with open("../profiles/client_config.json", "r") as f:
         data = json.load(f)
         HOST = data["ip"]
         PORT = data["port"]
@@ -51,7 +42,7 @@ def load_settings():
 
 
 def connected(send, source):
-    with open("../profiles/default_client.json", "r") as f:
+    with open("../profiles/client_config.json", "r") as f:
         data = json.load(f)
 
         print(data["client_id"])

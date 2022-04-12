@@ -57,7 +57,7 @@ class InputObject:
         for key in self.scalar_inputs_delta:
             self.scalar_inputs[key] = self.scalar_inputs_delta[key]
 
-    def input(self, key, value, is_scalar=False, is_delta=False):
+    def input(self, key, value, is_scalar=False, is_delta=False, repeat_inputs=accept_repeated_clicks):
         if key[:2] == "M." and self.control_config["enable_mouse"] \
                 or key[:2] != "M." and self.control_config["enable_keyboard"]:
             if is_scalar:
@@ -85,7 +85,7 @@ class InputObject:
                 key = self.apply_controls(key, do_conversion_first=False)
 
                 if key is not None:
-                    if accept_repeated_clicks or not (
+                    if repeat_inputs or not (
                             self.key_inputs.__contains__(key) and self.key_inputs[key] == value):
                         self.key_inputs[key] = value
                         self.key_inputs_delta[key] = value

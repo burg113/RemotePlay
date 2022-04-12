@@ -1,11 +1,8 @@
 from Input import input_listener
 from pynput import keyboard
 
-global alt_gr_pressed
-global t_pressed
 alt_gr_pressed = False
 t_pressed = False
-global listener
 listener = None
 
 

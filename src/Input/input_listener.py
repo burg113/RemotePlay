@@ -9,12 +9,12 @@ suppress_inputs = True
 control_config = None
 
 
-def input(flag, key, value, is_scalar=False, is_delta=False):
+def input(flag, key, value, is_scalar=False, is_delta=False, repeat_inputs=input_obj.accept_repeated_clicks):
     input_obj.control_config = control_config
     if flag == "Keyboard":
-        input_obj.input(key, value, is_scalar, is_delta)
+        input_obj.input(key, value, is_scalar, is_delta, repeat_inputs)
     if flag == "Mouse":
-        input_obj.input("M." + str(key), value, is_scalar, is_delta)
+        input_obj.input("M." + str(key), value, is_scalar, is_delta, repeat_inputs)
 
 
 def toggle_suppress_inputs():

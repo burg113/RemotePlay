@@ -126,10 +126,13 @@ class InputObject:
             mouse_y_delta = 0
             if self.scalar_inputs.__contains__("M.x") and self.control_config["enable_mouse_x"]:
                 mouse_x_delta += self.scalar_inputs["M.x"]
+                self.scalar_inputs["M.x"] = 0
             if self.scalar_inputs.__contains__("M.y") and self.control_config["enable_mouse_y"]:
                 mouse_y_delta += self.scalar_inputs["M.y"]
+                self.scalar_inputs["M.y"] = 0
 
             if mouse_x_delta != 0 or mouse_y_delta != 0:
+                print(50 * "#", mouse_x_delta, 50 * "#", mouse_y_delta, 50 * "#")
                 mouse_mover.move(mouse_x_delta, mouse_y_delta)
 
     def execute_key_deltas(self):

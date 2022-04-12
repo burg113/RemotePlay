@@ -30,8 +30,6 @@ def on_press(key):
         alt_gr_pressed = (key == keyboard.Key.alt_gr)
         if input_listener.suppress_inputs:
             input_listener.input("Keyboard", str(key).replace("Key.", ""), 1)
-
-    print(input_listener.input_obj.key_inputs)
     pass
 
 
@@ -48,7 +46,7 @@ def on_release(key):
         if key == keyboard.Key.alt_gr:
             alt_gr_pressed = False
         input_listener.input("Keyboard", str(key).replace("Key.", ""), 0)
-    print(input_listener.input_obj.key_inputs)
+
     pass
 
 

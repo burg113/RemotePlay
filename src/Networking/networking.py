@@ -26,7 +26,6 @@ CONTROL_BYTE_LENGTH = math.ceil(math.log(MAX_MESSAGE_LENGTH, 128))
 def int_to_bytes(i, n=CONTROL_BYTE_LENGTH):
     b = b''
     for c in range(n):
-        print(c, "--", int((i / 128 ** c) % 128))
         b += chr(int((i / 128 ** c) % 128)).encode()
     return b
 

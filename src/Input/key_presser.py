@@ -283,7 +283,13 @@ ahk = AHK()
 
 
 def press(key_in, val, mouse):
-    print("pressing", key_in, val)
+    if val == 0:
+        print("releasing", key_in)
+    elif val == 1:
+        print("pressing", key_in)
+    else:
+        print("input:", key_in, val)
+
     if mouse:
         if mouse_key_dict.__contains__(key_in):
             key = mouse_key_dict[key_in]
@@ -302,7 +308,7 @@ def press(key_in, val, mouse):
                     key = mouse_wheel_dict[key_in][0]
                 if val_sign == 1:
                     key = mouse_wheel_dict[key_in][1]
-                # print("pressing:" + str(key))
+
                 ahk.key_press(key, False)
             return
 

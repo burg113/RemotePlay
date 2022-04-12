@@ -34,7 +34,6 @@ class InputObject:
     def serialize_chunks(self, max_chunksize):
         chunks = []
         for i in range(0, len(self.key_inputs), max_chunksize):
-            print(self.key_inputs)
             chunks.append(pickle.dumps((dict(itertools.islice(self.key_inputs.items(), i, i + max_chunksize)), {})))
         for i in range(0, len(self.scalar_inputs), round(max_chunksize / 2)):
             chunks.append(
@@ -132,7 +131,6 @@ class InputObject:
                 self.scalar_inputs["M.y"] = 0
 
             if mouse_x_delta != 0 or mouse_y_delta != 0:
-                print(50 * "#", mouse_x_delta, 50 * "#", mouse_y_delta, 50 * "#")
                 mouse_mover.move(mouse_x_delta, mouse_y_delta)
 
     def execute_key_deltas(self):

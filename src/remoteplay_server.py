@@ -45,7 +45,7 @@ def press_keys(data, controls):
 
     delta = input_object.InputObject()
     delta.deserialize_delta(data)
-    print(delta.key_inputs)
+    print("deltas recieved:", delta.key_inputs,delta.scalar_inputs)
 
     key_input.control_config = controls
 

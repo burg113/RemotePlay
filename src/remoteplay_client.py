@@ -45,7 +45,6 @@ def connected(send, source):
     with open("../profiles/client_config.json", "r") as f:
         data = json.load(f)
 
-        print(data["client_id"])
         send("client_id " + str(data["client_id"]))
 
 
@@ -68,4 +67,4 @@ if __name__ == "__main__":
             print("sending")
             input_o = input_object.InputObject()
             input_o.deserialize(msg)
-            print(input_o.key_inputs, input_o.scalar_inputs, "\t\t\t\t\t", msg)
+            print(input_o.key_inputs, input_o.scalar_inputs)

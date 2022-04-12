@@ -167,7 +167,7 @@ class Client:
 
     def on_connection(self, sock):
         print("Connected")
-        self.callback_on_connection(send, self.host_ip)
+
         listen(self, sock, self.host_ip, send)
 
         print(f"Disconnected")
@@ -175,6 +175,8 @@ class Client:
     def connect(self, host, port, blocking=True):
         self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.sock.connect((host, port))
+
+        self.callback_on_connection(self.send, self.host_ip)
 
         self.process = Process(target=self.on_connection, args=(self.sock,))
         self.process.start()

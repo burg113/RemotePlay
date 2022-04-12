@@ -16,8 +16,6 @@ last_sync = time.time()
 def received(data, respond, ip):
     print("received:-", data, "from", ip)
 
-    input_listener.run()
-
 
 width = win32api.GetSystemMetrics(0)
 height = win32api.GetSystemMetrics(1)
@@ -49,11 +47,24 @@ def load_settings():
         input_listener.enable_keyboard = controls_data["enable_keyboard"]
         input_listener.enable_mouse = controls_data["enable_mouse"]
 
+        load_controls(controls_data)
+
+
+def connected(send, source):
+    with open("../profiles/default_client.json", "r") as f:
+        data = json.load(f)
+
+        print(data["client_id"])
+        send("client_id " + str(data["client_id"]))
+
 
 if __name__ == "__main__":
+
     load_settings()
 
-    client = networking.Client(HOST, PORT, received, blocking=False)
+    input_listener.run()
+
+    client = networking.Client(HOST, PORT, received, callback_on_connection=connected, blocking=False)
 
     while True:
         time.sleep(0.01)

@@ -27,7 +27,7 @@ def input(flag, key, value, is_scalar=False, is_delta=False):
 
             input_obj.input(key, value, is_scalar, is_delta)
     if flag == "Mouse" and enable_mouse:
-        input_obj.input(key, value, is_scalar, is_delta)
+        input_obj.input("M." + str(key), value, is_scalar, is_delta)
 
 
 def toggle_suppress_inputs():

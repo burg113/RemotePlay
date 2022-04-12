@@ -61,7 +61,6 @@ def received(data, respond, uuid):
             file_data = json.load(f)
 
             print("received:-", data, "-", "from", uuid)
-            print(file_data["client_controls"][client_ids[uuid]])
             press_keys(data, file_data["client_controls"][client_ids[uuid]])
 
 

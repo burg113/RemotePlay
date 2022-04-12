@@ -50,12 +50,12 @@ class InputObject:
         self.key_inputs, self.scalar_inputs = pickle.loads(data)
 
     def deserialize_delta(self, data):
-        key_inputs_delta, scalar_inputs_delta = pickle.loads(data)
-        for key in key_inputs_delta:
-            self.key_inputs[key] = key_inputs_delta[key]
+        self.key_inputs_delta, self.scalar_inputs_delta = pickle.loads(data)
+        for key in self.key_inputs_delta:
+            self.key_inputs[key] = self.key_inputs_delta[key]
 
-        for key in scalar_inputs_delta:
-            self.scalar_inputs[key] = scalar_inputs_delta[key]
+        for key in self.scalar_inputs_delta:
+            self.scalar_inputs[key] = self.scalar_inputs_delta[key]
 
     def input(self, key, value, is_scalar=False, is_delta=False):
         accept_input = True
@@ -115,10 +115,9 @@ class InputObject:
     def execute_key_deltas(self):
         for key in self.key_inputs_delta:
             val = self.key_inputs_delta[key]
-
             do_execute = True
             if self.control_config is not None:
-
+                print(10 * "#", key)
                 if self.control_config["enable_key_conversion"] and key in self.control_config["key_conversion"]:
                     key = self.control_config["key_conversion"][key]
 
@@ -128,4 +127,4 @@ class InputObject:
                                   key in self.control_config["key_blacklist"])
 
             if do_execute:
-                key_presser.press(key)
+                key_presser.press(key, val)

@@ -332,6 +332,7 @@ ahk = AHK()
 
 
 def press(key_in, val):
+    print("pressing",key_in,val)
     if mouse_key_dict.__contains__(key_in):
         key = mouse_key_dict[key_in]
         if val == 1:
